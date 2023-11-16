@@ -1,7 +1,10 @@
 const express = require('express');
 require('dotenv').config();
+const { randomInt } = require('node:crypto');
+
 const router = express.Router();
-const { DynamoDBClient, UpdateItemCommand, GetItemCommand } = require('@aws-sdk/client-dynamodb');
+const id = randomInt(1000000);
+const { DynamoDBClient, PutItemCommand, UpdateItemCommand, GetItemCommand } = require('@aws-sdk/client-dynamodb');
 
 //define environment variables
 const ACCESS_KEY = process.env.ACCESS_KEY;
@@ -23,7 +26,6 @@ router.get('/', (req, res) => {
 
 //GET a single med
 router.get('/:id', (req, res) => {
-	// scan table
 	const item = new GetItemCommand({
 		TableName: TABLE_NAME,
 		Key: { id: { N: req.params.id } },
@@ -43,7 +45,45 @@ router.get('/:id', (req, res) => {
 
 //POST a new med
 router.post('/', (req, res) => {
-	res.json({ message: 'POST new drug' });
+	const { directions, refillsLeft, drugStrength, strengthUnit, drugInfo, drugName } = req.body;
+	const drugModel = {
+		TableName: process.env.TABLE_NAME,
+		Item: {
+			directions: {
+				S: `${directions}`,
+			},
+			refillsLeft: {
+				N: `${refillsLeft}`,
+			},
+			drugStrength: {
+				N: `${drugStrength}`,
+			},
+			strengthUnit: {
+				S: `${strengthUnit}`,
+			},
+			drugInfo: {
+				S: `${drugInfo}`,
+			},
+			drugName: {
+				S: `${drugName}`,
+			},
+			id: {
+				N: `${id}`,
+			},
+		},
+	};
+
+	const drugItem = new PutItemCommand(drugModel);
+	client
+		.send(drugItem)
+		.then((response) => {
+			res.status(200).json(response);
+			console.log(response);
+		})
+		.catch((err) => {
+			res.status(500).json({ error: err.message });
+			console.log(err.message);
+		});
 });
 
 //DELETE a single med
