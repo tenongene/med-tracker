@@ -122,49 +122,19 @@ const deleteDrug = (req, res) => {
 
 // update a drug
 const updateDrug = (req, res) => {
-	// const newValues = Object.values(req.body);
-	// const currentValues = [];
-	// const id = req.params.id;
-	// const item = new QueryCommand({
-	// 	TableName: TABLE_NAME,
-	// 	KeyConditionExpression: 'id = :id',
-	// 	ExpressionAttributeValues: {
-	// 		':id': {
-	// 			N: id,
-	// 		},
-	// 	},
-	// });
-
-	// client.send(item).then((response) => {
-	// 	for (const x in response.Items[0]) {
-	// 		for (const y in response.Items[0][x]) {
-	// 			currentValues.push(response.Items[0][x][y]);
-	// 		}
-	// 	}
-
-	// 	const updated = _.difference(newValues, currentValues);
-	// 	console.log(updated);
-
-	// 	res.status(200).send({
-	// 		id,
-	// 		newValues,
-	// 		response: currentValues,
-	// 		updated: updated,
-	// 	});
-	// });
-
+	const { directions, refillsLeft, drugStrength, strengthUnit, drugInfo, drugName } = req.body;
 	const item = new UpdateItemCommand({
 		TableName: TABLE_NAME,
-		Key: {
-			id: req.params.id,
-		},
-		ExpressionAttributeNames: {
-			'#directions': directions,
-			'#refillsLeft': refillsLeft,
-			'#drugStrength': drugStrength,
-			'#strengthUnit': strengthUnit,
-			'#drugInfo': drugInfo,
-			'#drugName': drugName,
+		Key: { id: { N: req.params.id } },
+		UpdateExpression:
+			'SET directions = :dir, refillsLeft = :rl, drugStrength = :ds, strengthUnit = :su, drugInfo = :di, drugName = :dn',
+		ExpressionAttributeValues: {
+			':dir': { S: directions },
+			':rl': { N: refillsLeft },
+			':ds': { N: drugStrength },
+			':su': { S: strengthUnit },
+			':di': { S: drugInfo },
+			':dn': { S: drugName },
 		},
 		ReturnValues: 'UPDATED_NEW',
 	});
