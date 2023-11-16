@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const drugRoutes = require('./routes/drugs');
+const drugRoutes = require('./routes/drugRoutes');
 
 const app = express();
 const PORT = process.env.PORT;
