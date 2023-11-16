@@ -4,81 +4,20 @@ const { createDrug, getDrug, getMedList, deleteDrug, updateDrug } = require('../
 
 const router = express.Router();
 
-//GET all meds
+//GET all drugs
 router.get('/', getMedList);
 
-//GET a single med
+//GET a single drug
 // router.get('/:id', getDrug);
-router.get(
-	'/:id',
-	getDrug
-	// const item = new GetItemCommand({
-	// 	TableName: TABLE_NAME,
-	// 	Key: { id: { N: req.params.id } },
-	// });
+router.get('/:id', getDrug);
 
-	// client
-	// 	.send(item)
-	// 	.then((response) => {
-	// 		res.status(200).json(response.Item);
-	// 		console.log(response.Item);
-	// 	})
-	// 	.catch((err) => {
-	// 		res.status(500).send(err.message);
-	// 		console.log(err.message);
-	// 	});
-);
+//POST a new drug
+router.post('/', createDrug);
 
-//POST a new med
-// router.get('/', createDrug);
-router.post(
-	'/',
-	createDrug
-	// const { directions, refillsLeft, drugStrength, strengthUnit, drugInfo, drugName } = req.body;
-	// const drugModel = {
-	// 	TableName: process.env.TABLE_NAME,
-	// 	Item: {
-	// 		directions: {
-	// 			S: `${directions}`,
-	// 		},
-	// 		refillsLeft: {
-	// 			N: `${refillsLeft}`,
-	// 		},
-	// 		drugStrength: {
-	// 			N: `${drugStrength}`,
-	// 		},
-	// 		strengthUnit: {
-	// 			S: `${strengthUnit}`,
-	// 		},
-	// 		drugInfo: {
-	// 			S: `${drugInfo}`,
-	// 		},
-	// 		drugName: {
-	// 			S: `${drugName}`,
-	// 		},
-	// 		id: {
-	// 			N: `${id}`,
-	// 		},
-	// 	},
-	// };
-
-	// const drugItem = new PutItemCommand(drugModel);
-	// client
-	// 	.send(drugItem)
-	// 	.then((response) => {
-	// 		res.status(200).json(response);
-	// 		console.log(response);
-	// 	})
-	// 	.catch((err) => {
-	// 		res.status(500).json({ error: err.message });
-	// 		console.log(err.message);
-	// 	});
-);
-
-//DELETE a single med
+//DELETE a single drug
 router.delete('/:id', deleteDrug);
 
-//UPDATE a single med
+//UPDATE a single drug
 router.patch('/:id', updateDrug);
 
 ///export routes

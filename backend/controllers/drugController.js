@@ -8,7 +8,6 @@ const {
 	DeleteItemCommand,
 	UpdateItemCommand,
 	GetItemCommand,
-	QueryCommand,
 } = require('@aws-sdk/client-dynamodb');
 const id = randomInt(1000000);
 
