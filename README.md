@@ -3,7 +3,8 @@
 A Full Stack Application written in React and Bootstrap UI. Backend NodeJS/Express and AWS DynamoDB as database, using the AWS SDK. Application developed as part of the DevProjects challenge.
 
 ============================================
-![Image](https://github.com/tenongene/medtracker/assets/49034904/419d1443-fef0-42a4-89d2-4a7a6b4cf9ce)
+![image](https://github.com/tenongene/med-tracker/assets/49034904/e4888811-ce4a-4cc3-ad92-367e2c491f7b)
+
 
 ============================================
 
