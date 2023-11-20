@@ -8,7 +8,6 @@ const router = express.Router();
 router.get('/', getMedList);
 
 //GET a single drug
-// router.get('/:id', getDrug);
 router.get('/:id', getDrug);
 
 //POST a new drug

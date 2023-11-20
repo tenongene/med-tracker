@@ -30,8 +30,8 @@ const getMedList = (req, res) => {
 	client
 		.send(medList)
 		.then((response) => {
-			res.status(200).json(response);
-			console.log(response);
+			res.status(200).json(response.Items);
+			console.log(response.Items);
 		})
 		.catch((err) => {
 			res.status(500).json({ error: err.message });
