@@ -1,6 +1,6 @@
 # med-tracker
 
-A Full Stack Application written in React and Bootstrap UI. Backend NodeJS/Express and AWS DynamoDB as database, using the AWS SDK. Application developed as part of the dev projects challenge.
+A Full Stack Application written in React and Bootstrap UI. Backend NodeJS/Express and AWS DynamoDB as database, using the AWS SDK. Application developed as part of the DevProjects challenge.
 
 ============================================
 ![Image](https://github.com/tenongene/medtracker/assets/49034904/419d1443-fef0-42a4-89d2-4a7a6b4cf9ce)
