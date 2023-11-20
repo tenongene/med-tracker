@@ -8,4 +8,5 @@ A Full Stack Application written in React and Bootstrap UI. Backend NodeJS/Expre
 ============================================
 
 
-![image](https://github.com/tenongene/med-tracker/assets/49034904/4931585f-af3e-4db2-b204-a21cc7fde0c7)
+![image](https://github.com/tenongene/med-tracker/assets/49034904/a4eb2f55-f73c-4e7f-a619-61c7973d2161)
+
