@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import EntryForm from './EntryForm';
 
 const SummaryCard = ({ count }) => {

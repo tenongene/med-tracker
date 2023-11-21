@@ -9,6 +9,7 @@ const EntryForm = () => {
 	const [directions, setDirections] = useState('');
 	const [refillsLeft, setRefillsLeft] = useState('');
 	const [indication, setIndication] = useState('');
+	const [showForm, setShowForm] = useState('');
 
 	const handleSubmit = () => {
 		const newDrug = {
@@ -35,8 +36,13 @@ const EntryForm = () => {
 		setRefillsLeft('');
 		setStrengthUnit('');
 		setIndication('');
+		setShowForm('');
 
 		console.log(newDrug);
+	};
+
+	const handleFormToggle = () => {
+		showForm === 'show' ? setShowForm('') : setShowForm('show');
 	};
 
 	return (
@@ -48,12 +54,13 @@ const EntryForm = () => {
 					data-bs-toggle="collapse"
 					data-bs-target="#drugEntry"
 					aria-expanded="false"
-					aria-controls="drugEntry">
+					aria-controls="drugEntry"
+					onClick={handleFormToggle}>
 					<i className="bi bi-plus-lg me-2"></i>Add New Drug
 				</button>
 			</p>
 
-			<div className="collapse show" id="drugEntry">
+			<div className={`collapse ${showForm}`} id="drugEntry">
 				<div className="card card-body">
 					{/* / */}
 					{/* =====================FORM========================= */}
