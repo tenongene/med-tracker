@@ -1,13 +1,13 @@
-import FormModal from './FormModal';
+import EntryForm from './EntryForm';
 
-const SummaryCard = () => {
+const SummaryCard = ({ count }) => {
 	return (
 		<div className="container">
 			<div className="row">
-				<div className="col-sm-12">
+				<div className="col-sm-12 shadow-md rounded">
 					<div className="card border-secondary mt-5">
 						<div className="card-header">
-							<h4>Hello Bryson! </h4>
+							<h4>Hello Tom! </h4>
 							<h5>Welcome to MedTracker</h5>
 						</div>
 						<div className="card-body">
@@ -23,10 +23,10 @@ const SummaryCard = () => {
 								</h6>
 								<h4>
 									Total number of medications you are currently taking:{' '}
-									<span className="badge bg-success ms-2">{5}</span>
+									<span className="badge bg-success ms-2">{count}</span>
 								</h4>
 								<div className="add-drug mt-5">
-									<FormModal />
+									<EntryForm />
 								</div>
 							</div>
 						</div>

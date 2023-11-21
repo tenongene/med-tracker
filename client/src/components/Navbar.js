@@ -4,7 +4,7 @@ const Navbar = () => {
 			<div className="container">
 				<img src="mt3.jpg" className="object-fit-fill border rounded" height="100" width="100" alt="logo"></img>
 				<a href="/" style={{ textDecoration: 'none', color: 'darkcyan' }}>
-					<h4>
+					<h4 className="fw-bold">
 						<em>MedTracker</em>
 					</h4>
 				</a>

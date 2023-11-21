@@ -5,3 +5,8 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	background-color: aliceblue;
 }
+
+.edit-del {
+	display: flex;
+	justify-content: flex-end;
+}
