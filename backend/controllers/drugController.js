@@ -9,7 +9,10 @@ const {
 	UpdateItemCommand,
 	GetItemCommand,
 } = require('@aws-sdk/client-dynamodb');
-const id = randomInt(1000000);
+
+const id = () => {
+	return randomInt(1000000);
+};
 
 //env variables
 const ACCESS_KEY = process.env.ACCESS_KEY;
@@ -82,7 +85,7 @@ const createDrug = (req, res) => {
 				S: `${drugName}`,
 			},
 			id: {
-				N: `${id}`,
+				N: `${id()}`,
 			},
 		},
 	};
