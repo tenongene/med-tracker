@@ -22,12 +22,76 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 			<div className="card card border-secondary mt-4">
 				<div className="card-body">
 					<div className="edit-del">
-						<button type="button" className="btn btn-outline-light">
+						<button type="button" className="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#edit">
 							<img src="edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
 						</button>
-						<button type="button" className="btn btn-outline-light shadow-none " onClick={handleDelete}>
+
+						{/* =======================EDIT_MODAL======================= */}
+						<div className="modal fade" tabIndex="-1" id="edit" aria-labelledby="modal-title" aria-hidden="true">
+							<div className="modal-dialog modal-dialog-centered">
+								<div className="modal-content">
+									<div className="modal-header">
+										<h4 className="modal-title" id="modal-title">
+											Edit Drug
+										</h4>
+										<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div className="modal-body">
+										TODO
+										<p> Modal body text goes here.</p>
+									</div>
+									<div className="modal-footer">
+										<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+											<i className="bi bi-x-circle-fill"></i>
+											Close
+										</button>
+										<button type="button" className="btn btn-success">
+											<i className="bi bi-floppy"></i>
+											Save changes
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						{/* ===================EDIT_MODAL=====^^^^^^^^^^^^^^^^^^^^^^^^^^^============= */}
+
+						<button
+							type="button"
+							className="btn btn-outline-light shadow-none"
+							data-bs-toggle="modal"
+							data-bs-target="#delete">
 							<img src="trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
+
+						{/* =======================DELETE_MODAL======================= */}
+						<div className="modal fade" tabIndex="-1" id="delete" aria-labelledby="modal-title" aria-hidden="true">
+							<div className="modal-dialog modal-dialog-centered">
+								<div className="modal-content">
+									<div className="modal-header">
+										<h4 className="modal-title" id="modal-title">
+											Drug Deletion Confirmation
+										</h4>
+										<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div className="modal-body">
+										TODO
+										<p> Are you sure you want to delete {drugName}?</p>
+									</div>
+									<div className="modal-footer">
+										<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+											<i className="bi bi-x-circle-fill"></i>
+											Close
+										</button>
+										<button type="button" className="btn btn-success" onClick={handleDelete}>
+											<i class="bi bi-x-circle-fill"></i>
+											<a href="/">Delete Drug</a>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* ===================DELETE_MODAL=====^^^^^^^^^^^^^^^^^^^^^^^^^^^============= */}
 					</div>
 					<h4 className="card-title mt-3">
 						{drugName}{' '}

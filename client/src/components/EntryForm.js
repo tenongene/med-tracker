@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+const _ = require('lodash');
 
 const EntryForm = () => {
 	////
@@ -13,12 +14,12 @@ const EntryForm = () => {
 
 	const handleSubmit = () => {
 		const newDrug = {
-			drugName: drugName,
-			strengthUnit: strengthUnit,
-			directions: directions,
+			drugName: _.capitalize(drugName),
+			strengthUnit: _.lowerCase(strengthUnit),
+			directions: _.capitalize(directions),
 			drugStrength: drugStrength,
 			refillsLeft: refillsLeft,
-			drugInfo: indication,
+			drugInfo: _.capitalize(indication),
 		};
 
 		axios
@@ -164,6 +165,8 @@ const EntryForm = () => {
 							/>
 						</div>
 
+						{/* ====================^^^^^^^^========================= */}
+
 						<a href="/">
 							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
 								Submit
@@ -171,8 +174,6 @@ const EntryForm = () => {
 							</button>
 						</a>
 					</form>
-
-					{/* ====================^^^^^^^^========================= */}
 				</div>
 			</div>
 		</div>
