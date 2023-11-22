@@ -1,4 +1,18 @@
-const DeleteModal = ({ id, drugName, handleDelete, ident }) => {
+import axios from 'axios';
+
+const DeleteModal = ({ id, drugName }) => {
+	//
+	const handleDelete = () => {
+		axios
+			.delete(`/api/drugs/${id}`)
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
+	};
+
 	return (
 		<div className="modal fade" tabIndex="-1" id={id} aria-labelledby="modal-title" aria-hidden="true">
 			<div className="modal-dialog modal-dialog-centered">

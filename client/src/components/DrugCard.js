@@ -1,31 +1,8 @@
-import axios from 'axios';
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
 
-// const deleteDrug = (id) => {
-// 	axios
-// 		.delete(`/api/drugs/${id}`)
-// 		.then((response) => {
-// 			console.log(response);
-// 		})
-// 		.catch((error) => {
-// 			console.log(error.message);
-// 		});
-// };
-
-const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, ident }) => {
+const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, id }) => {
 	//
-	const handleDelete = () => {
-		axios
-			.delete(`/api/drugs/${ident}`)
-			.then((response) => {
-				console.log(response);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
-		// deleteDrug(ident);
-	};
 
 	return (
 		<div className="col-sm-12 col-md-6 col-lg-4 shadow-md rounded">
@@ -36,12 +13,12 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target="#edit">
+							data-bs-target={`#ed${id}`}>
 							<img src="edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
 						</button>
 						<EditModal
-							id="edit"
-							ident={ident}
+							id={`ed${id}`}
+							ident={id}
 							drugName={drugName}
 							drugInfo={drugInfo}
 							strengthUnit={strengthUnit}
@@ -53,11 +30,11 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target="#delete">
+							data-bs-target={`#del${id}`}>
 							<img src="trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
 
-						<DeleteModal id="delete" drugName={drugName} handleDelete={handleDelete} ident={ident} />
+						<DeleteModal id={`del${id}`} drugName={drugName} ident={id} />
 					</div>
 					<h4 className="card-title mt-1">
 						{drugName}{' '}
@@ -68,7 +45,9 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 					</h4>
 					<p className="card-text">{directions}</p>
 					<p>
-						<span className="ms-1">{refillsLeft} refills left</span>
+						<span className="ms-1">
+							{refillsLeft} refill{refillsLeft === '1' ? '' : 's'} left
+						</span>
 					</p>
 					<a href="/">
 						<span className="badge bg-success tt" data-bs-placement="top" title="set reminder">

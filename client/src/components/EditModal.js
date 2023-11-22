@@ -1,7 +1,7 @@
 import axios from 'axios';
 const _ = require('lodash');
 
-const EditModal = ({ id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, ident }) => {
+const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
 	//
 	const handleSubmit = () => {
 		//
@@ -130,7 +130,9 @@ const EditModal = ({ id, drugName, drugInfo, strengthUnit, drugStrength, refills
 						</button>
 						<button type="button" className="btn btn-success" onClick={handleSubmit}>
 							<img src="save.svg" alt="save" className="me-2" />
-							<a href="/">Save changes</a>
+							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>
+								Save changes
+							</a>
 						</button>
 					</div>
 				</div>
