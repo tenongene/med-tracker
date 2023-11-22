@@ -10,3 +10,7 @@ body {
 	display: flex;
 	justify-content: flex-end;
 }
+
+#caret {
+	color: white;
+}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 const _ = require('lodash');
 
-const EntryForm = () => {
+const EntryForm = ({ id }) => {
 	////
 	const [drugName, setDrugName] = useState('');
 	const [drugStrength, setDrugStrength] = useState('');
@@ -10,7 +10,6 @@ const EntryForm = () => {
 	const [directions, setDirections] = useState('');
 	const [refillsLeft, setRefillsLeft] = useState('');
 	const [indication, setIndication] = useState('');
-	const [showForm, setShowForm] = useState('');
 
 	const handleSubmit = () => {
 		const newDrug = {
@@ -37,35 +36,14 @@ const EntryForm = () => {
 		setRefillsLeft('');
 		setStrengthUnit('');
 		setIndication('');
-		setShowForm('');
 
 		console.log(newDrug);
 	};
 
-	const handleFormToggle = () => {
-		showForm === 'show' ? setShowForm('') : setShowForm('show');
-	};
-
 	return (
 		<div>
-			<p>
-				<button
-					type="button"
-					className="btn btn-success"
-					data-bs-toggle="collapse"
-					data-bs-target="#drugEntry"
-					aria-expanded="false"
-					aria-controls="drugEntry"
-					onClick={handleFormToggle}>
-					<i className="bi bi-plus-lg me-2"></i>Add New Drug
-				</button>
-			</p>
-
-			<div className={`collapse ${showForm}`} id="drugEntry">
+			<div className="collapse" id={id}>
 				<div className="card card-body">
-					{/* / */}
-					{/* =====================FORM========================= */}
-
 					<form>
 						<div className="mb-3">
 							<label htmlFor="drug-name" className="form-label">
@@ -99,13 +77,13 @@ const EntryForm = () => {
 								/>
 							</div>
 							<div className="col mb-3">
-								<label htmlFor="strength-unit" className="form-label">
+								<label htmlFor="unit" className="form-label">
 									Unit
 								</label>
 								<input
 									type="text"
 									className="form-control"
-									id="units"
+									id="unit"
 									value={strengthUnit}
 									onChange={(e) => {
 										setStrengthUnit(e.target.value);
@@ -165,12 +143,10 @@ const EntryForm = () => {
 							/>
 						</div>
 
-						{/* ====================^^^^^^^^========================= */}
-
 						<a href="/">
 							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
 								Submit
-								<i className="bi bi-caret-right ps-2"></i>
+								<img src="send-ico.svg" alt="enter" className="ms-2" />
 							</button>
 						</a>
 					</form>

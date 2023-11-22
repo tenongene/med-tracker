@@ -40,7 +40,7 @@ function App() {
 							return (
 								<DrugCard
 									key={drug.id.N}
-									id={drug.id.N}
+									ident={drug.id.N}
 									drugName={drug.drugName.S}
 									drugInfo={drug.drugInfo.S}
 									strengthUnit={drug.strengthUnit.S}

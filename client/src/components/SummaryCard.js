@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import EntryForm from './EntryForm';
 
 const SummaryCard = ({ count }) => {
@@ -28,7 +26,19 @@ const SummaryCard = ({ count }) => {
 									<span className="badge bg-success ms-2">{count}</span>
 								</h4>
 								<div className="add-drug mt-5">
-									<EntryForm />
+									<p>
+										<button
+											type="button"
+											className="btn btn-success"
+											data-bs-toggle="collapse"
+											data-bs-target="#drugEntry"
+											aria-expanded="false"
+											aria-controls="drugEntry">
+											<img src="plus.svg" alt="add" className="me-2" />
+											Add New Drug
+										</button>
+									</p>
+									<EntryForm id="drugEntry" />
 								</div>
 							</div>
 						</div>
