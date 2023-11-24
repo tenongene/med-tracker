@@ -43,13 +43,13 @@ const getMedList = (req, res) => {
 
 //  get a drug
 const getDrug = (req, res) => {
-	const item = new GetItemCommand({
+	const drug = new GetItemCommand({
 		TableName: TABLE_NAME,
 		Key: { id: { N: req.params.id } },
 	});
 
 	client
-		.send(item)
+		.send(drug)
 		.then((response) => {
 			res.status(200).json(response.Item);
 			console.log(response.Item);
@@ -105,13 +105,13 @@ const createDrug = (req, res) => {
 
 // delete a drug
 const deleteDrug = (req, res) => {
-	const item = new DeleteItemCommand({
+	const drug = new DeleteItemCommand({
 		TableName: TABLE_NAME,
 		Key: { id: { N: req.params.id } },
 	});
 
 	client
-		.send(item)
+		.send(drug)
 		.then((response) => {
 			res.status(200).json(response);
 			console.log(response);
@@ -125,7 +125,7 @@ const deleteDrug = (req, res) => {
 // update a drug
 const updateDrug = (req, res) => {
 	const { directions, refillsLeft, drugStrength, strengthUnit, drugInfo, drugName } = req.body;
-	const item = new UpdateItemCommand({
+	const drug = new UpdateItemCommand({
 		TableName: TABLE_NAME,
 		Key: { id: { N: req.params.id } },
 		UpdateExpression:
@@ -142,7 +142,7 @@ const updateDrug = (req, res) => {
 	});
 
 	client
-		.send(item)
+		.send(drug)
 		.then((response) => {
 			res.status(200).json({ message: response });
 		})

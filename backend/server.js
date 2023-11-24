@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const drugRoutes = require('./routes/drugRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -14,6 +15,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use('/api/drugs', drugRoutes);
+app.use('/api/user', userRoutes);
 
 //listen for requests
 app.listen(PORT, () => {

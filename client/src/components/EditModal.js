@@ -38,13 +38,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 					<div className="modal-body">
 						{/* =================EDIT MODAL FORM ====================== */}
 						<div className="mb-1">
-							<label htmlFor="drugName" className="form-label">
+							<label htmlFor={`drugName${ident}`} className="form-label">
 								Drug Name
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="drugName"
+								id={`drugName${ident}`}
 								defaultValue={drugName}
 								onChange={(e) => {
 									drugName = e.target.value;
@@ -52,13 +52,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor="drugStrength" className="form-label">
+							<label htmlFor={`drugStrength${ident}`} className="form-label">
 								Strength
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="drugStrength"
+								id={`drugStrength${ident}`}
 								defaultValue={drugStrength}
 								onChange={(e) => {
 									drugStrength = e.target.value;
@@ -66,13 +66,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor="strengthUnit" className="form-label">
+							<label htmlFor={`strengthUnit${ident}`} className="form-label">
 								Unit
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="strengthUnit"
+								id={`strengthUnit${ident}`}
 								defaultValue={strengthUnit}
 								onChange={(e) => {
 									strengthUnit = e.target.value;
@@ -80,13 +80,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor="directions" className="form-label">
+							<label htmlFor={`directions${ident}`} className="form-label">
 								Directions
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="directions"
+								id={`directions${ident}`}
 								defaultValue={directions}
 								onChange={(e) => {
 									directions = e.target.value;
@@ -94,13 +94,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor="refillsleft" className="form-label">
+							<label htmlFor={`refillsLeft${ident}`} className="form-label">
 								Refills
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="refillsLeft"
+								id={`refillsLeft${ident}`}
 								defaultValue={refillsLeft}
 								onChange={(e) => {
 									refillsLeft = e.target.value;
@@ -108,13 +108,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor="indication" className="form-label">
+							<label htmlFor={`indications${ident}`} className="form-label">
 								Indication
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id="indication"
+								id={`indications${ident}`}
 								defaultValue={drugInfo}
 								onChange={(e) => {
 									drugInfo = e.target.value;

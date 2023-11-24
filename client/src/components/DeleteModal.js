@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const DeleteModal = ({ id, drugName }) => {
+const DeleteModal = ({ id, drugName, ident }) => {
 	//
 	const handleDelete = () => {
 		axios
-			.delete(`/api/drugs/${id}`)
+			.delete(`/api/drugs/${ident}`)
 			.then((response) => {
 				console.log(response);
 			})
