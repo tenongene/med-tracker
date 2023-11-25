@@ -47,8 +47,7 @@ const client = new DynamoDBClient({
 
 // login user
 const loginUser = (req, res) => {
-	const { email } = req.body;
-	console.log(email);
+	const { email, password } = req.body;
 	const user = new QueryCommand({
 		TableName: TABLE_NAME,
 		KeyConditionExpression: 'email = :emailval',
@@ -60,28 +59,46 @@ const loginUser = (req, res) => {
 		},
 	});
 
-	client
-		.send(user)
-		.then((response) => {
-			res.status(200).json(response.Items);
-			console.log(response.Items);
-		})
-		.catch((err) => {
-			res.status(404).json({ error: err.message });
-			console.log(err.message);
-		});
+	try {
+		if (!email || !password) {
+			throw Error('All fields must be filled');
+		}
+
+		client
+			.send(user)
+			.then((response) => {
+				if (response.Items.length === 0) {
+					throw Error('Incorrect email: No user found with that email');
+				}
+
+				//bcrypt authentication
+				bcrypt.compare(password, response.Items[0].password.S).then((result) => {
+					const token = createToken(response.Items[0].password.S);
+					result
+						? res.status(200).json({ msg: 'User logged in successfully', token })
+						: res.status(403).json({ msg: 'Invalid password, please try again..' });
+				});
+			})
+			.catch((err) => {
+				res.status(403).json({ error: err.message });
+			});
+		//
+	} catch (err) {
+		console.log(err.message);
+		res.status(404).json({ error: err.message });
+	}
 };
 
+//
 // signup user
+
 const signupUser = async (req, res) => {
-	const { userName, email, password, firstName } = req.body;
+	const { email, password, firstName } = req.body;
+	const token = createToken({ password });
 	const h_pass = await hashPass(password);
 	const userModel = {
 		TableName: TABLE_NAME,
 		Item: {
-			userName: {
-				S: `${userName}`,
-			},
 			password: {
 				S: `${h_pass}`,
 			},
@@ -98,8 +115,8 @@ const signupUser = async (req, res) => {
 	};
 
 	try {
-		//validation
-		if (!email || !password || !firstName || !userName) {
+		// field validation
+		if (!email || !password || !firstName) {
 			throw Error('All fields must be filled');
 		}
 
@@ -112,15 +129,12 @@ const signupUser = async (req, res) => {
 		}
 
 		const newUser = new PutItemCommand(userModel);
-		// console.log(newUser.input.Item.password.S);
-		console.log(h_pass);
-		const token = createToken({ userName });
-		//
 		client
 			.send(newUser)
 			.then((response) => {
-				res.status(200).json({ email, token });
-				console.log(token);
+				//
+				//TODO: implement check against DB to make sure email doesn't already exist
+				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, token });
 			})
 			//
 			.catch((err) => {
