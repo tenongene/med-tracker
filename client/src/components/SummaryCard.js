@@ -1,6 +1,6 @@
 import EntryForm from './EntryForm';
 
-const SummaryCard = ({ count }) => {
+const SummaryCard = ({ count, emptyList }) => {
 	return (
 		<div className="container">
 			<div className="row">
@@ -26,6 +26,9 @@ const SummaryCard = ({ count }) => {
 									<span className="badge bg-success ms-2">{count}</span>
 								</h4>
 								<div className="add-drug mt-5">
+									<h5 className="mb-4 text-danger">
+										<em>{emptyList}</em>
+									</h5>
 									<p>
 										<button
 											type="button"
@@ -38,6 +41,7 @@ const SummaryCard = ({ count }) => {
 											Add New Drug
 										</button>
 									</p>
+
 									<EntryForm id="drugEntry" />
 								</div>
 							</div>

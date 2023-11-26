@@ -1,13 +1,36 @@
 import { useState } from 'react';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+
+const successNotify = (input) => toast.success(input);
+const errorNotify = (input) => toast.error(input);
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [firstName, setFirstName] = useState('');
+	const [passMatch, setPassMatch] = useState('False');
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(email, password);
+
+		passMatch &&
+			axios
+				.post('/api/user/signup', { firstName, email, password })
+				.then((response) => {
+					successNotify(response.data.msg);
+					localStorage.setItem('user', JSON.stringify(response));
+					console.log(response);
+				})
+				.catch((error) => {
+					error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+					console.log({ error: error.response.data.error, msg: error.response.data.msg });
+					console.log(error.message);
+				});
+
+		setEmail('');
+		setPassword('');
+		setFirstName('');
 	};
 
 	return (
@@ -30,7 +53,7 @@ const Signup = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<form className="p-3">
+							<form className="p-3" onSubmit={handleSubmit}>
 								<div className="mb-3">
 									<label htmlFor="inputFirstName" className="form-label">
 										First Name
@@ -68,7 +91,19 @@ const Signup = () => {
 										value={password}
 									/>
 								</div>
-								<button type="submit" className="btn btn-success mt-3" onSubmit={handleSubmit}>
+								<div className="mb-3">
+									<label htmlFor="inputPassword" className="form-label">
+										Re-enter Password
+									</label>
+									<input
+										type="password"
+										className="form-control"
+										id="r-inputPassword"
+										onChange={(e) => (password === e.target.value ? setPassMatch('True') : setPassMatch('False'))}
+									/>
+								</div>
+								<p>{!passMatch && 'Passwords do not match!'}</p>
+								<button type="submit" className="btn btn-success mt-3" onSubmit={handleSubmit} id="signup-trigger">
 									Sign Up
 									<img src="send-ico.svg" alt="signup" className="ms-2" />
 								</button>
@@ -77,6 +112,8 @@ const Signup = () => {
 					</div>
 				</div>
 			</div>
+
+			<Toaster />
 		</div>
 	);
 };

@@ -8,7 +8,12 @@ const Navbar = () => {
 						<em>MedTracker</em>
 					</h4>
 				</a>
-				<img src="profile.svg" alt="profile-icon" height="40" width="40" />
+				<div>
+					<button type="button" className="btn btn-sm btn-outline-success me-4">
+						Logout
+					</button>
+					<img src="profile.svg" alt="profile-icon" height="40" width="40" />
+				</div>
 			</div>
 		</nav>
 	);

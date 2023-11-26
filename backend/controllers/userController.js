@@ -68,15 +68,21 @@ const loginUser = (req, res) => {
 			.send(user)
 			.then((response) => {
 				if (response.Items.length === 0) {
-					throw Error('Incorrect email: No user found with that email');
+					throw Error('No user found with that email!');
 				}
 
 				//bcrypt authentication
 				bcrypt.compare(password, response.Items[0].password.S).then((result) => {
 					const token = createToken(response.Items[0].password.S);
 					result
-						? res.status(200).json({ msg: 'User logged in successfully', token })
-						: res.status(403).json({ msg: 'Invalid password, please try again..' });
+						? res.status(200).json({
+								// response,
+								msg: 'User logged in successfully',
+								token,
+								user: response.Items[0].firstName.S,
+								id: response.Items[0].id.N,
+						  })
+						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
 				});
 			})
 			.catch((err) => {

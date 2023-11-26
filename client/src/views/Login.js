@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+// import Home from './Home';
+import axios from 'axios';
+
+const successNotify = (input) => toast.success(input);
+const errorNotify = (input) => toast.error(input);
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -6,7 +12,22 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(email, password);
+
+		//
+		axios
+			.post('/api/user/login', { email, password })
+			.then((response) => {
+				successNotify(response.data.msg);
+				localStorage.setItem('user', JSON.stringify(response));
+				console.log(response);
+			})
+			.catch((error) => {
+				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+				console.log({ error: error.response.data.error, msg: error.response.data.msg });
+			});
+
+		setEmail('');
+		setPassword('');
 	};
 
 	return (
@@ -29,7 +50,7 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<form className="p-3">
+							<form className="p-3" onSubmit={handleSubmit}>
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
 										Email address
@@ -55,7 +76,7 @@ const Login = () => {
 										value={password}
 									/>
 								</div>
-								<button type="submit" className="btn btn-success mt-3" onSubmit={handleSubmit}>
+								<button type="submit" className="btn btn-success mt-3">
 									Log in
 									<img src="send-ico.svg" alt="signup" className="ms-2" />
 								</button>
@@ -68,6 +89,7 @@ const Login = () => {
 									</h6>
 								</div>
 							</form>
+							<Toaster className="col-10" />
 						</div>
 					</div>
 				</div>

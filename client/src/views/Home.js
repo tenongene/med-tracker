@@ -6,18 +6,24 @@ import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
 
 function Home() {
-	const [drugList, setDrugList] = useState(null);
+	const [drugList, setDrugList] = useState();
 	const [count, setCount] = useState('0');
+	const [emptyList, setEmptyList] = useState(
+		'You have not yet added any medications. Click the button below to begin adding your medications.'
+	);
 
 	useEffect(() => {
 		const getDrugList = () => {
 			axios
 				.get('/api/drugs')
 				.then((response) => {
-					console.log(response.data);
-					console.log(response.data.length);
+					// console.log(response.data);
+					// console.log(response.data.length);
 					setDrugList(response.data);
 					setCount(response.data.length);
+					if (response.data.length !== 0) {
+						setEmptyList('');
+					}
 				})
 				.catch((error) => {
 					console.log(error.message);
@@ -30,7 +36,7 @@ function Home() {
 	return (
 		<div>
 			<Navbar />
-			<SummaryCard count={count} />
+			<SummaryCard count={count} emptyList={emptyList} />
 			<div className="container">
 				<div className="row">
 					{drugList &&
