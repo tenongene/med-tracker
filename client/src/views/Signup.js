@@ -9,28 +9,32 @@ const Signup = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [firstName, setFirstName] = useState('');
-	const [passMatch, setPassMatch] = useState('False');
+	const [passMatch, setPassMatch] = useState('');
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		passMatch &&
-			axios
-				.post('/api/user/signup', { firstName, email, password })
-				.then((response) => {
-					successNotify(response.data.msg);
-					localStorage.setItem('user', JSON.stringify(response));
-					console.log(response);
-				})
-				.catch((error) => {
-					error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
-					console.log({ error: error.response.data.error, msg: error.response.data.msg });
-					console.log(error.message);
-				});
+		if (password !== passMatch) {
+			errorNotify('Passwords do not match!');
+			setPassMatch('');
+		}
+		axios
+			.post('/api/user/signup', { firstName, email, password })
+			.then((response) => {
+				successNotify(response.data.msg);
+				localStorage.setItem('user', JSON.stringify(response));
+				console.log(response);
+			})
+			.catch((error) => {
+				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+				console.log({ error: error.response.data.error, msg: error.response.data.msg });
+				console.log(error.message);
+			});
 
 		setEmail('');
 		setPassword('');
 		setFirstName('');
+		setPassMatch('');
 	};
 
 	return (
@@ -74,6 +78,7 @@ const Signup = () => {
 										type="email"
 										className="form-control"
 										id="inputEmail"
+										autoComplete="email"
 										aria-describedby="email"
 										onChange={(e) => setEmail(e.target.value)}
 										value={email}
@@ -87,22 +92,25 @@ const Signup = () => {
 										type="password"
 										className="form-control"
 										id="inputPassword"
+										autoComplete="current-password"
 										onChange={(e) => setPassword(e.target.value)}
 										value={password}
 									/>
 								</div>
 								<div className="mb-3">
-									<label htmlFor="inputPassword" className="form-label">
+									<label htmlFor="passmatch" className="form-label">
 										Re-enter Password
 									</label>
 									<input
 										type="password"
 										className="form-control"
-										id="r-inputPassword"
-										onChange={(e) => (password === e.target.value ? setPassMatch('True') : setPassMatch('False'))}
+										id="passmatch"
+										autoComplete="new-password"
+										onChange={(e) => setPassMatch(e.target.value)}
+										value={passMatch}
 									/>
 								</div>
-								<p>{!passMatch && 'Passwords do not match!'}</p>
+								<p className="text-danger">{passMatch === password ? '' : 'Passwords do not match!'}</p>
 								<button type="submit" className="btn btn-success mt-3" onSubmit={handleSubmit} id="signup-trigger">
 									Sign Up
 									<img src="send-ico.svg" alt="signup" className="ms-2" />

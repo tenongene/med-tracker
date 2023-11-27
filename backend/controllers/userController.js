@@ -19,14 +19,7 @@ const hashPass = async (password) => {
 };
 
 //database client
-const {
-	DynamoDBClient,
-	PutItemCommand,
-	ScanCommand,
-	DeleteItemCommand,
-	UpdateItemCommand,
-	QueryCommand,
-} = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
 
 //
 //randomid generator for userId
@@ -38,7 +31,7 @@ const id = () => {
 const ACCESS_KEY = process.env.ACCESS_KEY;
 const SECRET = process.env.SECRET;
 const REGION = process.env.REGION;
-const TABLE_NAME = process.env.TABLE_NAME2;
+const TABLE_NAME = process.env.TABLE_NAME;
 const client = new DynamoDBClient({
 	region: REGION,
 	accessKeyId: ACCESS_KEY,
@@ -81,6 +74,7 @@ const loginUser = (req, res) => {
 								token,
 								user: response.Items[0].firstName.S,
 								id: response.Items[0].id.N,
+								email,
 						  })
 						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
 				});
