@@ -16,7 +16,7 @@ export const UserContextProvider = ({ children }) => {
 	const errorNotify = (input) => toast.error(input);
 	//
 
-	const onSubmit = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		//
@@ -39,7 +39,19 @@ export const UserContextProvider = ({ children }) => {
 
 	return (
 		<UserContext.Provider
-			value={{ email, password, drugList, count, emptyList, setDrugList, setCount, setEmptyList, onSubmit }}>
+			value={{
+				email,
+				password,
+				drugList,
+				count,
+				emptyList,
+				setDrugList,
+				setCount,
+				setEmptyList,
+				handleSubmit,
+				setEmail,
+				setPassword,
+			}}>
 			{children}
 		</UserContext.Provider>
 	);

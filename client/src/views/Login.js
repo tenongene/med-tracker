@@ -1,18 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { Toaster } from 'react-hot-toast';
 
 //
 const Login = () => {
-	const { onSubmit } = useContext(UserContext);
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
-	const handleSubmit = (e) => {
-		onSubmit(e);
-		setEmail('');
-		setPassword('');
-	};
+	const { handleSubmit, email, password, setEmail, setPassword } = useContext(UserContext);
+	//
 
 	return (
 		<div className="container ">
@@ -35,6 +28,7 @@ const Login = () => {
 						</div>
 						<div className="card-body">
 							<form className="p-3" onSubmit={handleSubmit}>
+								{' '}
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
 										Email address
