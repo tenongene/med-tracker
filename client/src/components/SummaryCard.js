@@ -1,6 +1,11 @@
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import EntryForm from './EntryForm';
 
-const SummaryCard = ({ count, emptyList }) => {
+const SummaryCard = () => {
+	//
+	const { count, emptyList } = useContext(UserContext);
+
 	return (
 		<div className="container">
 			<div className="row">

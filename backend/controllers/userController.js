@@ -80,6 +80,7 @@ const loginUser = (req, res) => {
 								user: response.Items[0].firstName.S,
 								id: response.Items[0].id.N,
 								email,
+								drugList: response.Items[0].drugList.L,
 						  })
 						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
 				});

@@ -1,56 +1,31 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
 
 function Home() {
-	const [drugList, setDrugList] = useState();
-	const [count, setCount] = useState('0');
-	const [emptyList, setEmptyList] = useState(
-		'You have not yet added any medications. Click the button below to begin adding your medications.'
-	);
-
-	// useEffect(() => {
-	// 	const getDrugList = () => {
-	// 		axios
-	// 			.get('/api/drugs')
-	// 			.then((response) => {
-	// 				// console.log(response.data);
-	// 				// console.log(response.data.length);
-	// 				setDrugList(response.data);
-	// 				setCount(response.data.length);
-	// 				if (response.data.length !== 0) {
-	// 					setEmptyList('');
-	// 				}
-	// 			})
-	// 			.catch((error) => {
-	// 				console.log(error.message);
-	// 			});
-	// 	};
-
-	// 	getDrugList();
-	// }, []);
+	const { drugList } = useContext(UserContext);
 
 	return (
 		<div>
 			<Navbar />
-			<SummaryCard count={count} emptyList={emptyList} />
+			<SummaryCard />
 			<div className="container">
 				<div className="row">
 					{drugList &&
 						drugList.map((drug) => {
 							return (
 								<DrugCard
-									key={drug.id.N}
-									id={drug.id.N}
-									drugName={drug.drugName.S}
-									drugInfo={drug.drugInfo.S}
-									strengthUnit={drug.strengthUnit.S}
-									drugStrength={drug.drugStrength.N}
-									refillsLeft={drug.refillsLeft.N}
-									directions={drug.directions.S}
+									key={drug.M.drugId.N}
+									id={drug.M.drugId.N}
+									drugName={drug.M.drugName.S}
+									drugInfo={drug.M.drugInfo.S}
+									strengthUnit={drug.M.strengthUnit.S}
+									drugStrength={drug.M.drugStrength.N}
+									refillsLeft={drug.M.refillsLeft.N}
+									directions={drug.M.directions.S}
 								/>
 							);
 						})}

@@ -1,4 +1,5 @@
-import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider, Link } from 'react-router-dom';
+import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider } from 'react-router-dom';
+import { UserContextProvider } from './contexts/UserContext';
 
 //views and components
 import Home from './views/Home';
@@ -18,7 +19,9 @@ const router = createBrowserRouter(
 function App() {
 	return (
 		<div className="App">
-			<RouterProvider router={router}></RouterProvider>
+			<UserContextProvider>
+				<RouterProvider router={router} />
+			</UserContextProvider>
 		</div>
 	);
 }

@@ -1,31 +1,15 @@
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-// import Home from './Home';
-import axios from 'axios';
+import { useContext, useState } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { Toaster } from 'react-hot-toast';
 
-const successNotify = (input) => toast.success(input);
-const errorNotify = (input) => toast.error(input);
-
+//
 const Login = () => {
+	const { onSubmit } = useContext(UserContext);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		//
-		axios
-			.post('/api/user/login', { email, password })
-			.then((response) => {
-				successNotify(response.data.msg);
-				localStorage.setItem('user', JSON.stringify(response));
-				console.log(response);
-			})
-			.catch((error) => {
-				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
-				console.log({ error: error.response.data.error, msg: error.response.data.msg });
-			});
-
+		onSubmit(e);
 		setEmail('');
 		setPassword('');
 	};
