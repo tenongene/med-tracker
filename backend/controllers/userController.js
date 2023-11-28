@@ -13,9 +13,14 @@ const createToken = (id) => {
 //
 //bccrypt hashing
 const hashPass = async (password) => {
-	const salt = await bcrypt.genSalt();
-	const hash = await bcrypt.hash(password, salt);
-	return hash;
+	try {
+		const salt = await bcrypt.genSalt(15);
+		console.log(password, salt);
+		const hash = await bcrypt.hash(password, salt);
+		return hash;
+	} catch (err) {
+		console.log(err.message);
+	}
 };
 
 //database client
@@ -94,7 +99,7 @@ const loginUser = (req, res) => {
 
 const signupUser = async (req, res) => {
 	const { email, password, firstName } = req.body;
-	const token = createToken({ password });
+	const jwtoken = createToken({ password });
 	const h_pass = await hashPass(password);
 	const userModel = {
 		TableName: TABLE_NAME,
@@ -134,7 +139,7 @@ const signupUser = async (req, res) => {
 			.then((response) => {
 				//
 				//TODO: implement check against DB to make sure email doesn't already exist
-				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, token });
+				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, jwtoken });
 			})
 			//
 			.catch((err) => {

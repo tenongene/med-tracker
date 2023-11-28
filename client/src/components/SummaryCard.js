@@ -41,7 +41,6 @@ const SummaryCard = ({ count, emptyList }) => {
 											Add New Drug
 										</button>
 									</p>
-
 									<EntryForm id="drugEntry" />
 								</div>
 							</div>

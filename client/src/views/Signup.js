@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -10,6 +11,7 @@ const Signup = () => {
 	const [password, setPassword] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [passMatch, setPassMatch] = useState('');
+	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -23,12 +25,12 @@ const Signup = () => {
 			.then((response) => {
 				successNotify(response.data.msg);
 				localStorage.setItem('user', JSON.stringify(response));
+				navigate('/login');
 				console.log(response);
 			})
 			.catch((error) => {
 				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
 				console.log({ error: error.response.data.error, msg: error.response.data.msg });
-				console.log(error.message);
 			});
 
 		setEmail('');

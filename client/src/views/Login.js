@@ -72,6 +72,7 @@ const Login = () => {
 										type="password"
 										className="form-control"
 										id="inputPassword"
+										autoComplete="password"
 										onChange={(e) => setPassword(e.target.value)}
 										value={password}
 									/>

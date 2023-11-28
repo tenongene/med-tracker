@@ -12,26 +12,26 @@ function Home() {
 		'You have not yet added any medications. Click the button below to begin adding your medications.'
 	);
 
-	useEffect(() => {
-		const getDrugList = () => {
-			axios
-				.get('/api/drugs')
-				.then((response) => {
-					// console.log(response.data);
-					// console.log(response.data.length);
-					setDrugList(response.data);
-					setCount(response.data.length);
-					if (response.data.length !== 0) {
-						setEmptyList('');
-					}
-				})
-				.catch((error) => {
-					console.log(error.message);
-				});
-		};
+	// useEffect(() => {
+	// 	const getDrugList = () => {
+	// 		axios
+	// 			.get('/api/drugs')
+	// 			.then((response) => {
+	// 				// console.log(response.data);
+	// 				// console.log(response.data.length);
+	// 				setDrugList(response.data);
+	// 				setCount(response.data.length);
+	// 				if (response.data.length !== 0) {
+	// 					setEmptyList('');
+	// 				}
+	// 			})
+	// 			.catch((error) => {
+	// 				console.log(error.message);
+	// 			});
+	// 	};
 
-		getDrugList();
-	}, []);
+	// 	getDrugList();
+	// }, []);
 
 	return (
 		<div>
