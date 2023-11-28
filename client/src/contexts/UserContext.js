@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import { redirect, Navigate } from 'react-router-dom'; //TODO:
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
@@ -14,6 +15,7 @@ export const UserContextProvider = ({ children }) => {
 	);
 	const successNotify = (input) => toast.success(input);
 	const errorNotify = (input) => toast.error(input);
+
 	//
 
 	const handleSubmit = (e) => {
@@ -28,8 +30,10 @@ export const UserContextProvider = ({ children }) => {
 				setDrugList(response.data.drugList);
 				setCount(response.data.drugList.length);
 				setEmptyList('');
-
 				console.log(response);
+
+				//TODO
+				return <Navigate to="/" replace={true} />;
 			})
 			.catch((error) => {
 				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);

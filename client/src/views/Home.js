@@ -19,7 +19,7 @@ function Home() {
 							return (
 								<DrugCard
 									key={drug.M.drugId.N}
-									id={drug.M.drugId.N}
+									drugId={drug.M.drugId.N}
 									drugName={drug.M.drugName.S}
 									drugInfo={drug.M.drugInfo.S}
 									strengthUnit={drug.M.strengthUnit.S}

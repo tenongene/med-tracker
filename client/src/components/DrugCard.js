@@ -1,7 +1,7 @@
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
 
-const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, id }) => {
+const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, drugId }) => {
 	//
 
 	return (
@@ -13,12 +13,12 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target={`#ed${id}`}>
+							data-bs-target={`#ed${drugId}`}>
 							<img src="edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
 						</button>
 						<EditModal
-							id={`ed${id}`}
-							ident={id}
+							id={`ed${drugId}`}
+							ident={drugId}
 							drugName={drugName}
 							drugInfo={drugInfo}
 							strengthUnit={strengthUnit}
@@ -30,11 +30,11 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target={`#del${id}`}>
+							data-bs-target={`#del${drugId}`}>
 							<img src="trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
 
-						<DeleteModal id={`del${id}`} drugName={drugName} ident={id} />
+						<DeleteModal id={`del${drugId}`} drugName={drugName} ident={drugId} />
 					</div>
 					<h4 className="card-title mt-1">
 						{drugName}{' '}

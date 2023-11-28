@@ -9,6 +9,7 @@ import Signup from './views/Signup';
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>
+			//TODO
 			<Route path="/" element={<Home />}></Route>
 			<Route path="/login" element={<Login />}></Route>
 			<Route path="/signup" element={<Signup />}></Route>
