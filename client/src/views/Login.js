@@ -1,10 +1,11 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { Form } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 //
 const Login = () => {
-	const { handleSubmit, email, password, setEmail, setPassword } = useContext(UserContext);
+	const { email, password, setEmail, setPassword } = useContext(UserContext);
 	//
 
 	return (
@@ -27,7 +28,7 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<form className="p-3" onSubmit={handleSubmit}>
+							<Form className="p-3" method="post" action="/user">
 								{' '}
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
@@ -40,6 +41,7 @@ const Login = () => {
 										aria-describedby="email"
 										onChange={(e) => setEmail(e.target.value)}
 										value={email}
+										name="inputEmail"
 									/>
 								</div>
 								<div className="mb-3">
@@ -53,6 +55,7 @@ const Login = () => {
 										autoComplete="password"
 										onChange={(e) => setPassword(e.target.value)}
 										value={password}
+										name="inputPassword"
 									/>
 								</div>
 								<button type="submit" className="btn btn-success mt-3">
@@ -67,7 +70,7 @@ const Login = () => {
 										</span>
 									</h6>
 								</div>
-							</form>
+							</Form>
 							<Toaster className="col-10" />
 						</div>
 					</div>

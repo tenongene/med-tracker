@@ -1,12 +1,14 @@
-import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+// import { useContext } from 'react';
+import { useActionData } from 'react-router-dom';
+// import { UserContext } from '../contexts/UserContext';
 
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
 
-function Home() {
-	const { drugList } = useContext(UserContext);
+function User() {
+	const userData = useActionData();
+	// const { drugList } = useContext(UserContext);
 
 	return (
 		<div>
@@ -14,8 +16,8 @@ function Home() {
 			<SummaryCard />
 			<div className="container">
 				<div className="row">
-					{drugList &&
-						drugList.map((drug) => {
+					{userData &&
+						userData.drugList.map((drug) => {
 							return (
 								<DrugCard
 									key={drug.M.drugId.N}
@@ -35,4 +37,4 @@ function Home() {
 	);
 }
 
-export default Home;
+export default User;

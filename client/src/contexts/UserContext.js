@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
-import { redirect, Navigate } from 'react-router-dom'; //TODO:
-import toast from 'react-hot-toast';
+import { redirect } from 'react-router-dom';
+// import toast from 'react-hot-toast';
 import axios from 'axios';
 
 export const UserContext = createContext({});
@@ -13,33 +13,16 @@ export const UserContextProvider = ({ children }) => {
 	const [emptyList, setEmptyList] = useState(
 		'You have not yet added any medications. Click the button below to begin adding your medications.'
 	);
-	const successNotify = (input) => toast.success(input);
-	const errorNotify = (input) => toast.error(input);
+	// const successNotify = (input) => toast.success(input);
+	// const errorNotify = (input) => toast.error(input);
 
 	//
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
 
-		//
-		axios
-			.post('/api/user/login', { email, password })
-			.then((response) => {
-				successNotify(response.data.msg);
-				localStorage.setItem('user', JSON.stringify(response));
-				setDrugList(response.data.drugList);
-				setCount(response.data.drugList.length);
-				setEmptyList('');
-				console.log(response);
-
-				//TODO
-				return <Navigate to="/" replace={true} />;
-			})
-			.catch((error) => {
-				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
-				console.log({ error: error.response.data.error, msg: error.response.data.msg });
-			});
-	};
+	// 	//
+	// };
 
 	return (
 		<UserContext.Provider
@@ -52,11 +35,41 @@ export const UserContextProvider = ({ children }) => {
 				setDrugList,
 				setCount,
 				setEmptyList,
-				handleSubmit,
+				// handleSubmit,
 				setEmail,
 				setPassword,
 			}}>
 			{children}
 		</UserContext.Provider>
 	);
+};
+
+export const handleSubmitAction = async ({ request }) => {
+	console.log(request);
+	const data = await request.formData();
+	const payload = {
+		email: data.get('inputEmail'),
+		password: data.get('inputPassword'),
+	};
+	console.log(payload);
+
+	axios
+		.post('/api/user/login', payload)
+		.then((response) => {
+			console.log(response);
+			return response;
+			// successNotify(response.data.msg);
+			// localStorage.setItem('user', JSON.stringify(response));
+			// setDrugList(response.data.drugList);
+			// setCount(response.data.drugList.length);
+			// setEmptyList('');
+			// console.log(response);
+		})
+		.catch((error) => {
+			console.log(error.message);
+			// error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+			// console.log({ error: error.response.data.error, msg: error.response.data.msg });
+		});
+
+	return redirect('/user');
 };
