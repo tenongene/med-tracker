@@ -12,7 +12,7 @@ const Login = () => {
 		<div className="container ">
 			<div className="row justify-content-center ">
 				<div className="col-sm-12 col-md-8 col-lg-10">
-					<div className="card border border-info-subtle rounded-4 shadow-lg">
+					<div className="card-login border border-info-subtle rounded-4 shadow-lg">
 						<div className="container">
 							<div className="row">
 								<img src="mt3.jpg" className="entryLogo" alt="logo" />
@@ -28,7 +28,7 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<Form className="p-3" method="post" action="/user">
+							<Form className="p-3" method="POST" action="/user">
 								{' '}
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
@@ -71,6 +71,7 @@ const Login = () => {
 									</h6>
 								</div>
 							</Form>
+
 							<Toaster className="col-10" />
 						</div>
 					</div>

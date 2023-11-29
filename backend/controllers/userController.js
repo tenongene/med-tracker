@@ -24,7 +24,7 @@ const hashPass = async (password) => {
 };
 
 //database client
-const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient, GetItemCommand, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
 
 //
 //randomid generator for userId
@@ -65,6 +65,7 @@ const loginUser = (req, res) => {
 		client
 			.send(user)
 			.then((response) => {
+				console.log(response.Items[0].drugList.L);
 				if (response.Items.length === 0) {
 					throw Error('No user found with that email!');
 				}
@@ -96,8 +97,29 @@ const loginUser = (req, res) => {
 };
 
 //
-// signup user
 
+//getuser
+const getUser = (req, res) => {
+	const user = new GetItemCommand({
+		TableName: TABLE_NAME,
+		Key: { id: { S: req.params.email } },
+	});
+	console.log(user.id);
+	client
+		.send(user)
+		.then((response) => {
+			res.status(200).json(response.Item);
+			console.log(response);
+		})
+		.catch((err) => {
+			res.status(404).json({ error: err.message });
+			console.log(err.message);
+		});
+};
+
+//
+
+// signup user
 const signupUser = async (req, res) => {
 	const { email, password, firstName } = req.body;
 	const jwtoken = createToken({ password });
@@ -152,4 +174,4 @@ const signupUser = async (req, res) => {
 	}
 };
 
-module.exports = { signupUser, loginUser };
+module.exports = { signupUser, loginUser, getUser };

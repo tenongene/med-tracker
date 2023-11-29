@@ -45,7 +45,7 @@ const EntryForm = ({ id }) => {
 			<div className="collapse" id={id}>
 				<div className="card card-body">
 					<form>
-						<div className="mb-3">
+						<div className="mb-3 ">
 							<label htmlFor="drug-name" className="form-label">
 								Drug Name
 							</label>
@@ -143,7 +143,7 @@ const EntryForm = ({ id }) => {
 							/>
 						</div>
 
-						<a href="/">
+						<a href="/user">
 							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
 								Submit
 								<img src="send-ico.svg" alt="enter" className="ms-2" />

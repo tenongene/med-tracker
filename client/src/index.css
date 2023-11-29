@@ -20,6 +20,10 @@ body {
 	width: 40%;
 }
 
-.card {
+.add-drug {
+	margin-top: 100px;
+}
+
+.card-login {
 	margin-top: 20vh;
 }

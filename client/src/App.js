@@ -1,6 +1,5 @@
 import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider } from 'react-router-dom';
-import { UserContextProvider } from './contexts/UserContext';
-import { handleSubmitAction } from './contexts/UserContext';
+import { handleSubmit } from './contexts/UserContext';
 
 //views and components
 import User from './views/User';
@@ -11,8 +10,8 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>
 			<Route path="/" element={<Login />}></Route>
-			<Route path="/user" element={<User />} action={handleSubmitAction}></Route>
 			<Route path="/signup" element={<Signup />}></Route>
+			<Route path="/user" element={<User />} action={handleSubmit}></Route>
 		</Route>
 	)
 );
@@ -20,9 +19,7 @@ const router = createBrowserRouter(
 function App() {
 	return (
 		<div className="App">
-			<UserContextProvider>
-				<RouterProvider router={router} />
-			</UserContextProvider>
+			<RouterProvider router={router} />
 		</div>
 	);
 }
