@@ -146,7 +146,7 @@ const EntryForm = ({ id }) => {
 						<a href="/user">
 							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
 								Submit
-								<img src="send-ico.svg" alt="enter" className="ms-2" />
+								<img src="../send-ico.svg" alt="enter" className="ms-2" />
 							</button>
 						</a>
 					</form>

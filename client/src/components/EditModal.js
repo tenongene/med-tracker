@@ -129,7 +129,7 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							Close
 						</button>
 						<button type="button" className="btn btn-success" onClick={handleSubmit}>
-							<img src="save.svg" alt="save" className="me-2" />
+							<img src="../save.svg" alt="save" className="me-2" />
 							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>
 								Save changes
 							</a>

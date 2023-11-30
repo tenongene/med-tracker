@@ -14,7 +14,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
 							data-bs-target={`#ed${drugId}`}>
-							<img src="edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
+							<img src="../edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
 						</button>
 						<EditModal
 							id={`ed${drugId}`}
@@ -31,7 +31,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
 							data-bs-target={`#del${drugId}`}>
-							<img src="trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
+							<img src="../trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
 
 						<DeleteModal id={`del${drugId}`} drugName={drugName} ident={drugId} />
@@ -51,7 +51,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 					</p>
 					<a href="/">
 						<span className="badge bg-success tt" data-bs-placement="top" title="set reminder">
-							<img src="bell.svg" alt="reminder" />
+							<img src="../bell.svg" alt="reminder" />
 						</span>
 					</a>
 					<a href="/" data-bs-toggle="tooltip" data-bs-title="Default tooltip">

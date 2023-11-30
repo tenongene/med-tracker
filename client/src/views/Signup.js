@@ -43,7 +43,7 @@ const Signup = () => {
 		<div className="container ">
 			<div className="row justify-content-center ">
 				<div className="col-sm-12 col-md-8 col-lg-10">
-					<div className="card border border-info-subtle rounded-4 shadow-lg">
+					<div className="card border border-info-subtle rounded-4 shadow-lg card-login">
 						<div className="container">
 							<div className="row">
 								<img src="mt3.jpg" className="entryLogo" alt="logo" />

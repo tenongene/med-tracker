@@ -1,10 +1,14 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { Form } from 'react-router-dom';
+import { Form, redirect } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+
+const errorNotify = (input) => toast.error(input);
 
 //
-const Login = () => {
+export const Login = () => {
 	const { email, password, setEmail, setPassword } = useContext(UserContext);
 	//
 
@@ -28,7 +32,9 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<Form className="p-3" method="POST" action="/user">
+							{/* // */}
+							{/* Action definition */}
+							<Form className="p-3" method="POST" action="/">
 								{' '}
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
@@ -81,4 +87,31 @@ const Login = () => {
 	);
 };
 
-export default Login;
+//action from <Form> element
+export const submitAction = async ({ request }) => {
+	//
+	let id;
+	const data = await request.formData();
+	const payload = {
+		email: data.get('inputEmail'),
+		password: data.get('inputPassword'),
+	};
+	console.log(payload);
+
+	await axios
+		.post('/api/user/login', payload)
+		.then((response) => {
+			console.log(response);
+			id = response.data.id;
+			console.log(id);
+
+			// localStorage.setItem('user', JSON.stringify(response));
+		})
+		.catch((error) => {
+			error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+			console.log({ error: error.response.data.error, msg: error.response.data.msg });
+			return redirect('/*');
+		});
+
+	return redirect(`/user/${id}`);
+};

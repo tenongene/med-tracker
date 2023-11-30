@@ -1,17 +1,19 @@
 import { createBrowserRouter, Route, createRoutesFromElements, RouterProvider } from 'react-router-dom';
-import { handleSubmit } from './contexts/UserContext';
+import { submitAction } from './views/Login';
 
 //views and components
-import User from './views/User';
-import Login from './views/Login';
+import { User, userLoader } from './views/User';
+import { Login } from './views/Login';
 import Signup from './views/Signup';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route>
-			<Route path="/" element={<Login />}></Route>
+			<Route path="/" element={<Login />} action={submitAction}></Route>
 			<Route path="/signup" element={<Signup />}></Route>
-			<Route path="/user" element={<User />} action={handleSubmit}></Route>
+			<Route path="/user/:id" element={<User />} loader={userLoader}></Route>
+			<Route path="*" element={<ErrorBoundary />}></Route>
 		</Route>
 	)
 );

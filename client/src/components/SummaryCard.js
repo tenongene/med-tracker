@@ -40,7 +40,7 @@ const SummaryCard = () => {
 											data-bs-target="#drugEntry"
 											aria-expanded="false"
 											aria-controls="drugEntry">
-											<img src="plus.svg" alt="add" className="me-2" />
+											<img src="../plus.svg" alt="add" className="me-2" />
 											Add New Drug
 										</button>
 									</p>

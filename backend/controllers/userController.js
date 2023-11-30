@@ -24,7 +24,7 @@ const hashPass = async (password) => {
 };
 
 //database client
-const { DynamoDBClient, GetItemCommand, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
 
 //
 //randomid generator for userId
@@ -36,6 +36,7 @@ const id = () => {
 const ACCESS_KEY = process.env.ACCESS_KEY;
 const SECRET = process.env.SECRET;
 const REGION = process.env.REGION;
+const TABLE_GSI = process.env.TABLE_GSI;
 const TABLE_NAME = process.env.TABLE_NAME;
 const client = new DynamoDBClient({
 	region: REGION,
@@ -100,15 +101,20 @@ const loginUser = (req, res) => {
 
 //getuser
 const getUser = (req, res) => {
-	const user = new GetItemCommand({
+	const user = new QueryCommand({
 		TableName: TABLE_NAME,
-		Key: { id: { S: req.params.email } },
+		IndexName: TABLE_GSI,
+		KeyConditionExpression: 'id = :idvalue',
+		ExpressionAttributeValues: {
+			':idvalue': { N: `${req.params.id}` },
+		},
+		ProjectionExpression: 'drugList, email',
 	});
-	console.log(user.id);
+
 	client
 		.send(user)
 		.then((response) => {
-			res.status(200).json(response.Item);
+			res.status(200).json(response.Items);
 			console.log(response);
 		})
 		.catch((err) => {
