@@ -1,9 +1,15 @@
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { redirect } from 'react-router-dom';
 import axios from 'axios';
 const _ = require('lodash');
 
-const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
+const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
 	//
-	const handleSubmit = () => {
+	const { uid, drugList, email } = useContext(UserContext);
+
+	//
+	const handleSubmit = async () => {
 		//
 		const updatedDrug = {
 			drugName: _.capitalize(drugName),
@@ -12,17 +18,29 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 			drugStrength: drugStrength,
 			refillsLeft: refillsLeft,
 			drugInfo: _.capitalize(drugInfo),
+			drugId: drugId,
 		};
-		console.log(updatedDrug);
 
-		axios
-			.patch(`/api/drugs/${ident}`, updatedDrug)
-			.then((response) => {
-				console.log(response);
-			})
-			.catch((error) => {
-				console.log(error.message);
+		try {
+			//find index and replace
+			const drugIndex = drugList.findIndex((drug) => {
+				return drug.M.drugId.S === drugId;
 			});
+
+			await axios
+				.patch('/api/user/edit', { drugIndex, email, updatedDrug })
+				.then((response) => {
+					return response;
+				})
+				.catch((error) => {
+					throw Error(error);
+				});
+			//
+		} catch (error) {
+			console.log(error.message);
+		}
+
+		return redirect(`/user/${uid}`);
 	};
 
 	return (
@@ -38,13 +56,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 					<div className="modal-body">
 						{/* =================EDIT MODAL FORM ====================== */}
 						<div className="mb-1">
-							<label htmlFor={`drugName${ident}`} className="form-label">
+							<label htmlFor={`drugName${drugId}`} className="form-label">
 								Drug Name
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`drugName${ident}`}
+								id={`drugName${drugId}`}
 								defaultValue={drugName}
 								onChange={(e) => {
 									drugName = e.target.value;
@@ -52,13 +70,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor={`drugStrength${ident}`} className="form-label">
+							<label htmlFor={`drugStrength${drugId}`} className="form-label">
 								Strength
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`drugStrength${ident}`}
+								id={`drugStrength${drugId}`}
 								defaultValue={drugStrength}
 								onChange={(e) => {
 									drugStrength = e.target.value;
@@ -66,13 +84,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor={`strengthUnit${ident}`} className="form-label">
+							<label htmlFor={`strengthUnit${drugId}`} className="form-label">
 								Unit
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`strengthUnit${ident}`}
+								id={`strengthUnit${drugId}`}
 								defaultValue={strengthUnit}
 								onChange={(e) => {
 									strengthUnit = e.target.value;
@@ -80,13 +98,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor={`directions${ident}`} className="form-label">
+							<label htmlFor={`directions${drugId}`} className="form-label">
 								Directions
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`directions${ident}`}
+								id={`directions${drugId}`}
 								defaultValue={directions}
 								onChange={(e) => {
 									directions = e.target.value;
@@ -94,13 +112,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor={`refillsLeft${ident}`} className="form-label">
+							<label htmlFor={`refillsLeft${drugId}`} className="form-label">
 								Refills
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`refillsLeft${ident}`}
+								id={`refillsLeft${drugId}`}
 								defaultValue={refillsLeft}
 								onChange={(e) => {
 									refillsLeft = e.target.value;
@@ -108,13 +126,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 							/>
 						</div>
 						<div className="mb-1">
-							<label htmlFor={`indications${ident}`} className="form-label">
+							<label htmlFor={`indications${drugId}`} className="form-label">
 								Indication
 							</label>
 							<input
 								type="text"
 								className="form-control"
-								id={`indications${ident}`}
+								id={`indications${drugId}`}
 								defaultValue={drugInfo}
 								onChange={(e) => {
 									drugInfo = e.target.value;
@@ -128,12 +146,12 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 						<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
 							Close
 						</button>
-						<button type="button" className="btn btn-success" onClick={handleSubmit}>
-							<img src="save.svg" alt="save" className="me-2" />
-							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>
+						<a href={`/user/${uid}`}>
+							<button type="button" className="btn btn-success" onClick={handleSubmit}>
+								<img src="../save.svg" alt="save" className="me-2" />
 								Save changes
-							</a>
-						</button>
+							</button>
+						</a>
 					</div>
 				</div>
 			</div>

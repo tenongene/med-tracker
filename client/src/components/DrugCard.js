@@ -1,7 +1,7 @@
 import DeleteModal from './DeleteModal';
 import EditModal from './EditModal';
 
-const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, id }) => {
+const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions, drugId }) => {
 	//
 
 	return (
@@ -13,12 +13,12 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target={`#ed${id}`}>
-							<img src="edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
+							data-bs-target={`#ed${drugId}`}>
+							<img src="../edit.svg" alt="edit" data-bs-placement="top" title="edit drug" />
 						</button>
 						<EditModal
-							id={`ed${id}`}
-							ident={id}
+							id={`ed${drugId}`}
+							drugId={drugId}
 							drugName={drugName}
 							drugInfo={drugInfo}
 							strengthUnit={strengthUnit}
@@ -30,11 +30,11 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							type="button"
 							className="btn btn-outline-light shadow-none"
 							data-bs-toggle="modal"
-							data-bs-target={`#del${id}`}>
-							<img src="trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
+							data-bs-target={`#del${drugId}`}>
+							<img src="../trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
 
-						<DeleteModal id={`del${id}`} drugName={drugName} ident={id} />
+						<DeleteModal id={`del${drugId}`} drugName={drugName} drugId={drugId} />
 					</div>
 					<h4 className="card-title mt-1">
 						{drugName}{' '}
@@ -51,7 +51,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 					</p>
 					<a href="/">
 						<span className="badge bg-success tt" data-bs-placement="top" title="set reminder">
-							<img src="bell.svg" alt="reminder" />
+							<img src="../bell.svg" alt="reminder" />
 						</span>
 					</a>
 					<a href="/" data-bs-toggle="tooltip" data-bs-title="Default tooltip">

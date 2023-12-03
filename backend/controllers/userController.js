@@ -2,8 +2,22 @@ require('dotenv').config();
 const _ = require('lodash');
 const validator = require('validator');
 const { randomInt } = require('node:crypto');
+const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+//env variables
+const ACCESS_KEY = process.env.ACCESS_KEY;
+const SECRET = process.env.SECRET;
+const REGION = process.env.REGION;
+const TABLE_GSI = process.env.TABLE_GSI;
+const TABLE_NAME = process.env.TABLE_NAME;
+
+//database client
+const client = new DynamoDBClient({
+	region: REGION,
+	accessKeyId: ACCESS_KEY,
+	secretAccessKey: SECRET,
+});
 
 //
 //JWT issue function
@@ -13,13 +27,14 @@ const createToken = (id) => {
 //
 //bccrypt hashing
 const hashPass = async (password) => {
-	const salt = await bcrypt.genSalt();
-	const hash = await bcrypt.hash(password, salt);
-	return hash;
+	try {
+		const salt = await bcrypt.genSalt(15);
+		const hash = await bcrypt.hash(password, salt);
+		return hash;
+	} catch (err) {
+		console.log(err.message);
+	}
 };
-
-//database client
-const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
 
 //
 //randomid generator for userId
@@ -27,18 +42,7 @@ const id = () => {
 	return randomInt(1000000);
 };
 
-//env variables
-const ACCESS_KEY = process.env.ACCESS_KEY;
-const SECRET = process.env.SECRET;
-const REGION = process.env.REGION;
-const TABLE_NAME = process.env.TABLE_NAME;
-const client = new DynamoDBClient({
-	region: REGION,
-	accessKeyId: ACCESS_KEY,
-	secretAccessKey: SECRET,
-});
-
-// login user
+// login user // App Entrypoint
 const loginUser = (req, res) => {
 	const { email, password } = req.body;
 	const user = new QueryCommand({
@@ -75,6 +79,7 @@ const loginUser = (req, res) => {
 								user: response.Items[0].firstName.S,
 								id: response.Items[0].id.N,
 								email,
+								drugList: response.Items[0].drugList.L,
 						  })
 						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
 				});
@@ -90,14 +95,41 @@ const loginUser = (req, res) => {
 };
 
 //
-// signup user
 
+//getuser //from GSI
+const getUser = (req, res) => {
+	const user = new QueryCommand({
+		TableName: TABLE_NAME,
+		IndexName: TABLE_GSI,
+		KeyConditionExpression: 'id = :idvalue',
+		ExpressionAttributeValues: {
+			':idvalue': { N: `${req.params.id}` },
+		},
+		ProjectionExpression: 'drugList, email, firstName, id',
+	});
+
+	client
+		.send(user)
+		.then((response) => {
+			res.status(200).json(response.Items);
+			return response;
+		})
+		.catch((err) => {
+			res.status(404).json({ error: err.message });
+			console.log(err.message);
+		});
+};
+
+//
+
+// signup user
 const signupUser = async (req, res) => {
 	const { email, password, firstName } = req.body;
-	const token = createToken({ password });
+	const jwtoken = createToken({ password });
 	const h_pass = await hashPass(password);
 	const userModel = {
 		TableName: TABLE_NAME,
+		ConditionExpression: 'attribute_not_exists(email)',
 		Item: {
 			password: {
 				S: `${h_pass}`,
@@ -110,6 +142,9 @@ const signupUser = async (req, res) => {
 			},
 			id: {
 				N: `${id()}`,
+			},
+			drugList: {
+				L: [],
 			},
 		},
 	};
@@ -133,17 +168,19 @@ const signupUser = async (req, res) => {
 			.send(newUser)
 			.then((response) => {
 				//
-				//TODO: implement check against DB to make sure email doesn't already exist
-				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, token });
+				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, jwtoken });
 			})
 			//
 			.catch((err) => {
-				res.status(400).json({ error: err.message });
-				// console.log(err);
+				res.status(400).json({ error: err.message, msg: 'User already exists! Please Login!' });
 			});
 	} catch (err) {
 		res.status(400).send({ error: err.message });
 	}
 };
 
-module.exports = { signupUser, loginUser };
+module.exports = {
+	loginUser,
+	getUser,
+	signupUser,
+};

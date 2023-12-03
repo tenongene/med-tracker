@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -10,6 +11,7 @@ const Signup = () => {
 	const [password, setPassword] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [passMatch, setPassMatch] = useState('');
+	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -23,12 +25,12 @@ const Signup = () => {
 			.then((response) => {
 				successNotify(response.data.msg);
 				localStorage.setItem('user', JSON.stringify(response));
+				navigate('/');
 				console.log(response);
 			})
 			.catch((error) => {
 				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
 				console.log({ error: error.response.data.error, msg: error.response.data.msg });
-				console.log(error.message);
 			});
 
 		setEmail('');
@@ -41,7 +43,7 @@ const Signup = () => {
 		<div className="container ">
 			<div className="row justify-content-center ">
 				<div className="col-sm-12 col-md-8 col-lg-10">
-					<div className="card border border-info-subtle rounded-4 shadow-lg">
+					<div className="card border border-info-subtle rounded-4 shadow-lg card-login">
 						<div className="container">
 							<div className="row">
 								<img src="mt3.jpg" className="entryLogo" alt="logo" />
@@ -116,6 +118,14 @@ const Signup = () => {
 									<img src="send-ico.svg" alt="signup" className="ms-2" />
 								</button>
 							</form>
+							<div className="signup mt-4">
+								<h6>
+									Already registered?{' '}
+									<span className="ms-3">
+										<a href="/">Login</a>
+									</span>
+								</h6>
+							</div>
 						</div>
 					</div>
 				</div>

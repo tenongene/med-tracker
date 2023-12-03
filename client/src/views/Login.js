@@ -1,40 +1,23 @@
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-// import Home from './Home';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
+import { Form, redirect } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
-const successNotify = (input) => toast.success(input);
 const errorNotify = (input) => toast.error(input);
+const successNotify = (input) => toast.success(input);
 
-const Login = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		//
-		axios
-			.post('/api/user/login', { email, password })
-			.then((response) => {
-				successNotify(response.data.msg);
-				localStorage.setItem('user', JSON.stringify(response));
-				console.log(response);
-			})
-			.catch((error) => {
-				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
-				console.log({ error: error.response.data.error, msg: error.response.data.msg });
-			});
-
-		setEmail('');
-		setPassword('');
-	};
+//
+export const Login = () => {
+	//
+	const { email, password, setEmail, setPassword } = useContext(UserContext);
 
 	return (
 		<div className="container ">
 			<div className="row justify-content-center ">
 				<div className="col-sm-12 col-md-8 col-lg-10">
-					<div className="card border border-info-subtle rounded-4 shadow-lg">
+					<div className="card-login border border-info-subtle rounded-4 shadow-lg">
 						<div className="container">
 							<div className="row">
 								<img src="mt3.jpg" className="entryLogo" alt="logo" />
@@ -50,7 +33,10 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="card-body">
-							<form className="p-3" onSubmit={handleSubmit}>
+							{/* // */}
+							{/* Action definition */}
+							<Form className="p-3" method="POST" action="/">
+								{' '}
 								<div className="mb-3">
 									<label htmlFor="inputEmail" className="form-label">
 										Email address
@@ -62,6 +48,7 @@ const Login = () => {
 										aria-describedby="email"
 										onChange={(e) => setEmail(e.target.value)}
 										value={email}
+										name="inputEmail"
 									/>
 								</div>
 								<div className="mb-3">
@@ -72,8 +59,10 @@ const Login = () => {
 										type="password"
 										className="form-control"
 										id="inputPassword"
+										autoComplete="password"
 										onChange={(e) => setPassword(e.target.value)}
 										value={password}
+										name="inputPassword"
 									/>
 								</div>
 								<button type="submit" className="btn btn-success mt-3">
@@ -88,7 +77,8 @@ const Login = () => {
 										</span>
 									</h6>
 								</div>
-							</form>
+							</Form>
+
 							<Toaster className="col-10" />
 						</div>
 					</div>
@@ -98,4 +88,30 @@ const Login = () => {
 	);
 };
 
-export default Login;
+//action from <Form> element
+export const submitAction = async ({ request }) => {
+	//
+	let uid;
+	const data = await request.formData();
+	const payload = {
+		email: data.get('inputEmail'),
+		password: data.get('inputPassword'),
+	};
+	console.log(payload);
+
+	await axios
+		.post('/api/user/login', payload)
+		.then((response) => {
+			uid = response.data.id;
+			successNotify('User Logged In Successfully!');
+			// localStorage.setItem('user', JSON.stringify(response));
+			return response;
+		})
+		.catch((error) => {
+			error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+			console.log({ error: error.response.data.error, msg: error.response.data.msg });
+			return redirect('/*');
+		});
+
+	return redirect(`/user/${uid}`);
+};
