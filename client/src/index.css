@@ -27,3 +27,7 @@ body {
 .card-login {
 	margin-top: 20vh;
 }
+
+.logout:hover {
+	background-color: rgb(128, 227, 227);
+}

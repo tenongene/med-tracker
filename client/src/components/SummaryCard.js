@@ -4,6 +4,7 @@ import EntryForm from './EntryForm';
 
 const SummaryCard = () => {
 	const { count, firstName, emptyList } = useContext(UserContext);
+
 	return (
 		<div className="container">
 			<div className="row">
@@ -30,7 +31,7 @@ const SummaryCard = () => {
 								</h4>
 								<div className="add-drug mt-5">
 									<h5 className="mb-4 text-danger">
-										<em>{emptyList}</em>
+										<em>{!count && emptyList}</em>
 									</h5>
 									<p>
 										<button

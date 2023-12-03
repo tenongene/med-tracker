@@ -1,7 +1,11 @@
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 const _ = require('lodash');
 
 const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
+	//
+	const { uid, drugList } = useContext(UserContext);
 	//
 	const handleSubmit = () => {
 		//
@@ -12,11 +16,13 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 			drugStrength: drugStrength,
 			refillsLeft: refillsLeft,
 			drugInfo: _.capitalize(drugInfo),
+			drugId: ident,
 		};
+
 		console.log(updatedDrug);
 
 		axios
-			.patch(`/api/drugs/${ident}`, updatedDrug)
+			.patch('/api/user', drugList)
 			.then((response) => {
 				console.log(response);
 			})
@@ -130,7 +136,7 @@ const EditModal = ({ ident, id, drugName, drugInfo, strengthUnit, drugStrength, 
 						</button>
 						<button type="button" className="btn btn-success" onClick={handleSubmit}>
 							<img src="../save.svg" alt="save" className="me-2" />
-							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>
+							<a href={`/user/${uid}`} style={{ textDecoration: 'none', color: 'white' }}>
 								Save changes
 							</a>
 						</button>

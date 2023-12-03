@@ -118,6 +118,14 @@ const Signup = () => {
 									<img src="send-ico.svg" alt="signup" className="ms-2" />
 								</button>
 							</form>
+							<div className="signup mt-4">
+								<h6>
+									Already registered?{' '}
+									<span className="ms-3">
+										<a href="/">Login</a>
+									</span>
+								</h6>
+							</div>
 						</div>
 					</div>
 				</div>

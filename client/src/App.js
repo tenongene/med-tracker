@@ -12,7 +12,7 @@ const router = createBrowserRouter(
 		<Route>
 			<Route path="/" element={<Login />} action={submitAction}></Route>
 			<Route path="/signup" element={<Signup />}></Route>
-			<Route path="/user/:id" element={<User />} loader={userLoader}></Route>
+			<Route path="/user/:uid" element={<User />} loader={userLoader}></Route>
 			<Route path="*" element={<ErrorBoundary />}></Route>
 		</Route>
 	)

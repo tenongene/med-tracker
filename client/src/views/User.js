@@ -12,9 +12,8 @@ import DrugCard from '../components/DrugCard';
 
 export const User = () => {
 	//
-	// eslint-disable-next-line
-	const { drugList, count, firstName, emptyList, setDrugList, setCount, setEmptyList, setFirstName } =
-		useContext(UserContext);
+
+	const { drugList, setDrugList, setCount, setFirstName, setUid, setEmail } = useContext(UserContext);
 	//
 	const userData = useLoaderData();
 	console.log(userData.data[0].email.S);
@@ -22,25 +21,27 @@ export const User = () => {
 
 	setDrugList(userData.data[0].drugList.L);
 	setCount(userData.data[0].drugList.L.length);
-	setEmptyList(userData.emptyList);
+	setFirstName(userData.data[0].firstName.S);
+	setUid(userData.data[0].id.N);
+	setEmail(userData.data[0].email.S);
 
 	return (
 		<div>
-			<Navbar email={userData.data[0].email.S} />
-			<SummaryCard count={count} firstName={firstName} emptyList={emptyList} />
+			<Navbar />
+			<SummaryCard />
 			<div className="container">
 				<div className="row">
 					{drugList &&
 						drugList.map((drug) => {
 							return (
 								<DrugCard
-									key={drug.M.drugId.N}
-									drugId={drug.M.drugId.N}
+									key={drug.M.drugId.S}
+									drugId={drug.M.drugId.S}
 									drugName={drug.M.drugName.S}
 									drugInfo={drug.M.drugInfo.S}
 									strengthUnit={drug.M.strengthUnit.S}
-									drugStrength={drug.M.drugStrength.N}
-									refillsLeft={drug.M.refillsLeft.N}
+									drugStrength={drug.M.drugStrength.S}
+									refillsLeft={drug.M.refillsLeft.S}
 									directions={drug.M.directions.S}
 								/>
 							);
@@ -54,6 +55,6 @@ export const User = () => {
 //loader
 
 export const userLoader = async ({ params }) => {
-	const loaderData = await axios.get(`/api/user/${params.id}`);
+	const loaderData = await axios.get(`/api/user/${params.uid}`);
 	return loaderData;
 };

@@ -14,14 +14,16 @@ const Navbar = () => {
 				</a>
 
 				<div>
-					<p>{email}</p>
-					<button type="button" className="btn btn-sm btn-outline-success me-4">
-						Logout
+					<p className="text-success">{email}</p>
+					<button type="button" className="btn btn-sm btn-outline-success me-4 logout">
+						{/* TODO LOGOUT ONCLICK LOGIG Logout */}
+						<a href="/" style={{ textDecoration: 'none' }} className="text-success">
+							Logout
+						</a>
 					</button>
 				</div>
 			</div>
 		</nav>
 	);
 };
-
 export default Navbar;

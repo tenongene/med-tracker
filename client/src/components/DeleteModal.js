@@ -1,10 +1,19 @@
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 
 const DeleteModal = ({ id, drugName, ident }) => {
 	//
+	const { uid, drugList } = useContext(UserContext);
+	//
+
 	const handleDelete = () => {
+		//
+		const newList = drugList.filter((drug) => {
+			return drug.drugId !== ident;
+		});
 		axios
-			.delete(`/api/drugs/${ident}`)
+			.patch('/api/user/delete', newList)
 			.then((response) => {
 				console.log(response);
 			})
@@ -31,7 +40,7 @@ const DeleteModal = ({ id, drugName, ident }) => {
 							Close
 						</button>
 						<button type="button" className="btn btn-danger" onClick={handleDelete}>
-							<a href="/" style={{ textDecoration: 'none', color: 'white' }}>
+							<a href={`/user/${uid}`} style={{ textDecoration: 'none', color: 'white' }}>
 								Delete Drug
 							</a>
 						</button>

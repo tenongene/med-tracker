@@ -11,6 +11,10 @@ const errorNotify = (input) => toast.error(input);
 export const Login = () => {
 	const { email, password, setEmail, setPassword } = useContext(UserContext);
 	//
+	// const actionData = useActionData();
+	// console.log(actionData);
+
+	// setFirstName(actionData.data.user);
 
 	return (
 		<div className="container ">
@@ -90,7 +94,7 @@ export const Login = () => {
 //action from <Form> element
 export const submitAction = async ({ request }) => {
 	//
-	let id;
+	let uid;
 	const data = await request.formData();
 	const payload = {
 		email: data.get('inputEmail'),
@@ -102,8 +106,8 @@ export const submitAction = async ({ request }) => {
 		.post('/api/user/login', payload)
 		.then((response) => {
 			console.log(response);
-			id = response.data.id;
-			console.log(id);
+			uid = response.data.id;
+			console.log(uid);
 
 			// localStorage.setItem('user', JSON.stringify(response));
 		})
@@ -113,5 +117,5 @@ export const submitAction = async ({ request }) => {
 			return redirect('/*');
 		});
 
-	return redirect(`/user/${id}`);
+	return redirect(`/user/${uid}`);
 };

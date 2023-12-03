@@ -19,6 +19,7 @@ const ACCESS_KEY = process.env.ACCESS_KEY;
 const SECRET = process.env.SECRET;
 const REGION = process.env.REGION;
 const TABLE_NAME = process.env.TABLE_NAME;
+////database client
 const client = new DynamoDBClient({
 	region: REGION,
 	accessKeyId: ACCESS_KEY,

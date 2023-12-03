@@ -1,28 +1,44 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
+import { uid } from 'uid';
+
 const _ = require('lodash');
 
 const EntryForm = ({ id }) => {
 	////
-	const [drugName, setDrugName] = useState('');
-	const [drugStrength, setDrugStrength] = useState('');
-	const [strengthUnit, setStrengthUnit] = useState('');
-	const [directions, setDirections] = useState('');
-	const [refillsLeft, setRefillsLeft] = useState('');
-	const [indication, setIndication] = useState('');
+
+	const {
+		email,
+		drugName,
+		drugStrength,
+		strengthUnit,
+		directions,
+		refillsLeft,
+		indication,
+		setDrugName,
+		setDrugStrength,
+		setStrengthUnit,
+		setDirections,
+		setRefillsLeft,
+		setIndication,
+	} = useContext(UserContext);
 
 	const handleSubmit = () => {
-		const newDrug = {
-			drugName: _.capitalize(drugName),
-			strengthUnit: _.lowerCase(strengthUnit),
-			directions: _.capitalize(directions),
-			drugStrength: drugStrength,
-			refillsLeft: refillsLeft,
-			drugInfo: _.capitalize(indication),
-		};
+		const newDrug = [
+			{
+				drugName: _.capitalize(drugName),
+				strengthUnit: _.lowerCase(strengthUnit),
+				directions: _.capitalize(directions),
+				drugStrength: drugStrength,
+				refillsLeft: refillsLeft,
+				drugInfo: _.capitalize(indication),
+				drugId: uid(5),
+			},
+		];
 
 		axios
-			.post('/api/drugs', newDrug)
+			.patch('/api/user', { newDrug, email })
 			.then((response) => {
 				console.log(response);
 			})
@@ -36,8 +52,6 @@ const EntryForm = ({ id }) => {
 		setRefillsLeft('');
 		setStrengthUnit('');
 		setIndication('');
-
-		console.log(newDrug);
 	};
 
 	return (
@@ -56,7 +70,6 @@ const EntryForm = ({ id }) => {
 								value={drugName}
 								onChange={(e) => {
 									setDrugName(e.target.value);
-									console.log(e.target.value);
 								}}
 							/>
 						</div>
@@ -72,7 +85,6 @@ const EntryForm = ({ id }) => {
 									value={drugStrength}
 									onChange={(e) => {
 										setDrugStrength(e.target.value);
-										console.log(e.target.value);
 									}}
 								/>
 							</div>
@@ -87,7 +99,6 @@ const EntryForm = ({ id }) => {
 									value={strengthUnit}
 									onChange={(e) => {
 										setStrengthUnit(e.target.value);
-										console.log(e.target.value);
 									}}
 								/>
 							</div>
@@ -104,7 +115,6 @@ const EntryForm = ({ id }) => {
 								value={directions}
 								onChange={(e) => {
 									setDirections(e.target.value);
-									console.log(e.target.value);
 								}}
 							/>
 						</div>
@@ -119,7 +129,6 @@ const EntryForm = ({ id }) => {
 								value={refillsLeft}
 								onChange={(e) => {
 									setRefillsLeft(e.target.value);
-									console.log(e.target.value);
 								}}
 							/>
 						</div>
@@ -138,12 +147,11 @@ const EntryForm = ({ id }) => {
 								value={indication}
 								onChange={(e) => {
 									setIndication(e.target.value);
-									console.log(e.target.value);
 								}}
 							/>
 						</div>
 
-						<a href="/user">
+						<a href="/user/">
 							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
 								Submit
 								<img src="../send-ico.svg" alt="enter" className="ms-2" />
