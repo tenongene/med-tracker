@@ -5,19 +5,13 @@ import { useLoaderData } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
-
-//
-// const successNotify = (input) => toast.success(input);
-// const errorNotify = (input) => toast.error(input);
+import { Toaster } from 'react-hot-toast';
 
 export const User = () => {
 	//
-
 	const { drugList, setDrugList, setCount, setFirstName, setUid, setEmail } = useContext(UserContext);
 	//
 	const userData = useLoaderData();
-	// console.log(userData.data[0].email.S);
-	console.log(userData.data);
 
 	setDrugList(userData.data[0].drugList.L);
 	setCount(userData.data[0].drugList.L.length);
@@ -29,6 +23,7 @@ export const User = () => {
 		<div>
 			<Navbar />
 			<SummaryCard />
+			<Toaster />
 			<div className="container">
 				<div className="row">
 					{drugList &&

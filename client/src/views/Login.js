@@ -6,15 +6,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 const errorNotify = (input) => toast.error(input);
+const successNotify = (input) => toast.success(input);
 
 //
 export const Login = () => {
-	const { email, password, setEmail, setPassword } = useContext(UserContext);
 	//
-	// const actionData = useActionData();
-	// console.log(actionData);
-
-	// setFirstName(actionData.data.user);
+	const { email, password, setEmail, setPassword } = useContext(UserContext);
 
 	return (
 		<div className="container ">
@@ -105,11 +102,10 @@ export const submitAction = async ({ request }) => {
 	await axios
 		.post('/api/user/login', payload)
 		.then((response) => {
-			console.log(response);
 			uid = response.data.id;
-			console.log(uid);
-
+			successNotify('User Logged In Successfully!');
 			// localStorage.setItem('user', JSON.stringify(response));
+			return response;
 		})
 		.catch((error) => {
 			error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);

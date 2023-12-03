@@ -29,7 +29,6 @@ const createToken = (id) => {
 const hashPass = async (password) => {
 	try {
 		const salt = await bcrypt.genSalt(15);
-		console.log(password, salt);
 		const hash = await bcrypt.hash(password, salt);
 		return hash;
 	} catch (err) {
@@ -65,7 +64,6 @@ const loginUser = (req, res) => {
 		client
 			.send(user)
 			.then((response) => {
-				console.log(response.Items[0].drugList.L);
 				if (response.Items.length === 0) {
 					throw Error('No user found with that email!');
 				}
@@ -114,7 +112,7 @@ const getUser = (req, res) => {
 		.send(user)
 		.then((response) => {
 			res.status(200).json(response.Items);
-			console.log(response);
+			return response;
 		})
 		.catch((err) => {
 			res.status(404).json({ error: err.message });

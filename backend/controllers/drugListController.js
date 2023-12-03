@@ -14,7 +14,6 @@ const ddb = DynamoDBDocumentClient.from(client);
 
 //Add a drug to user
 const createUserDrug = async (req, res) => {
-	console.log(req.body);
 	const { newDrug, email } = req.body;
 
 	try {
@@ -38,11 +37,9 @@ const createUserDrug = async (req, res) => {
 	}
 };
 
-//TODO
 //edit user drug
 const editUserDrug = async (req, res) => {
 	const { drugIndex, email, updatedDrug } = req.body;
-	console.log(drugIndex, email, updatedDrug);
 
 	try {
 		const response = await ddb.send(
@@ -68,7 +65,6 @@ const editUserDrug = async (req, res) => {
 //delete user drug
 const deleteUserDrug = async (req, res) => {
 	const { drugIndex, email } = req.body;
-	console.log(drugIndex, email);
 
 	try {
 		const response = await ddb.send(

@@ -1,8 +1,15 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import toast from 'react-hot-toast';
+//
+const successNotify = (input) => toast.success(input);
 
 const Navbar = () => {
 	const { email } = useContext(UserContext);
+
+	const handleLogout = () => {
+		successNotify('User Logged Out!');
+	};
 	return (
 		<nav className="navbar bg-info-subtle">
 			<div className="container ">
@@ -12,15 +19,15 @@ const Navbar = () => {
 						<em>MedTracker</em>
 					</h4>
 				</a>
-
 				<div>
 					<p className="text-success">{email}</p>
-					<button type="button" className="btn btn-sm btn-outline-success me-4 logout">
-						{/* TODO LOGOUT ONCLICK LOGIG Logout */}
-						<a href="/" style={{ textDecoration: 'none' }} className="text-success">
+
+					{/* TODO LOGOUT ONCLICK LOGIC	 Logout */}
+					<a href="/" style={{ textDecoration: 'none' }} className="text-success">
+						<button type="button" className="btn btn-sm btn-outline-success me-4 logout" onClick={handleLogout}>
 							Logout
-						</a>
-					</button>
+						</button>
+					</a>
 				</div>
 			</div>
 		</nav>

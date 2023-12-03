@@ -30,7 +30,6 @@ const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength,
 			await axios
 				.patch('/api/user/edit', { drugIndex, email, updatedDrug })
 				.then((response) => {
-					console.log(response);
 					return response;
 				})
 				.catch((error) => {

@@ -40,7 +40,7 @@ const EntryForm = ({ id }) => {
 		axios
 			.patch('/api/user', { newDrug, email })
 			.then((response) => {
-				console.log(response);
+				return response;
 			})
 			.catch((error) => {
 				console.log(error.message);
