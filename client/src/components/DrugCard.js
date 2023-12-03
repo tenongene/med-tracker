@@ -18,7 +18,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 						</button>
 						<EditModal
 							id={`ed${drugId}`}
-							ident={drugId}
+							drugId={drugId}
 							drugName={drugName}
 							drugInfo={drugInfo}
 							strengthUnit={strengthUnit}
@@ -34,7 +34,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							<img src="../trash.svg" alt="delete" data-bs-placement="top" title="delete drug" />
 						</button>
 
-						<DeleteModal id={`del${drugId}`} drugName={drugName} ident={drugId} />
+						<DeleteModal id={`del${drugId}`} drugName={drugName} drugId={drugId} />
 					</div>
 					<h4 className="card-title mt-1">
 						{drugName}{' '}

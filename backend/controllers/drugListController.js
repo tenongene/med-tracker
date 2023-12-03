@@ -41,41 +41,44 @@ const createUserDrug = async (req, res) => {
 //TODO
 //edit user drug
 const editUserDrug = async (req, res) => {
-	console.log(req.body);
-	const { updatedDrug, email } = req.body;
-
-	const response = await ddb.send(
-		new UpdateCommand({
-			TableName: TABLE_NAME,
-			Key: { email: email },
-			UpdateExpression: 'SET drugList = list_append(:updatedrug, drugList)',
-			ExpressionAttributeValues: {
-				':updatedrug': updatedDrug,
-			},
-			ReturnValues: 'ALL_NEW',
-		})
-	);
-
-	console.log(response);
-	return response;
-};
-
-//TODO
-//delete user drug
-const deleteUserDrug = async (req, res) => {
-	console.log(req.body);
-	const { newList, email } = req.body;
-	console.log(newList);
+	const { drugIndex, email, updatedDrug } = req.body;
+	console.log(drugIndex, email, updatedDrug);
 
 	try {
 		const response = await ddb.send(
 			new UpdateCommand({
 				TableName: TABLE_NAME,
 				Key: { email: email },
-				UpdateExpression: 'SET drugList = :newlist',
+				UpdateExpression: `SET drugList[${drugIndex}] = :updated_drug`,
 				ExpressionAttributeValues: {
-					':newlist': newList,
+					':updated_drug': updatedDrug,
 				},
+				ReturnValues: 'ALL_NEW',
+			})
+		);
+
+		console.log(response);
+		return response;
+		//
+	} catch (error) {
+		console.log(error.message);
+	}
+};
+
+//delete user drug
+const deleteUserDrug = async (req, res) => {
+	const { drugIndex, email } = req.body;
+	console.log(drugIndex, email);
+
+	try {
+		const response = await ddb.send(
+			new UpdateCommand({
+				TableName: TABLE_NAME,
+				Key: { email: email },
+				UpdateExpression: `REMOVE drugList[${drugIndex}]`,
+				// ExpressionAttributeValues: {
+				// 	':newlist': newList,
+				// },
 				ReturnValues: 'ALL_NEW',
 			})
 		);

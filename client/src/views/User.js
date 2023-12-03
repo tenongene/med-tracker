@@ -16,8 +16,8 @@ export const User = () => {
 	const { drugList, setDrugList, setCount, setFirstName, setUid, setEmail } = useContext(UserContext);
 	//
 	const userData = useLoaderData();
-	console.log(userData.data[0].email.S);
-	console.log(userData.data[0].drugList.L);
+	// console.log(userData.data[0].email.S);
+	console.log(userData.data);
 
 	setDrugList(userData.data[0].drugList.L);
 	setCount(userData.data[0].drugList.L.length);

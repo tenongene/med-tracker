@@ -1,25 +1,41 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const DeleteModal = ({ id, drugName, ident }) => {
+const DeleteModal = ({ id, drugName, drugId }) => {
 	//
-	const { uid, drugList } = useContext(UserContext);
+	const { uid, drugList, email } = useContext(UserContext);
 	//
+	const navigate = useNavigate();
 
-	const handleDelete = () => {
-		//
-		const newList = drugList.filter((drug) => {
-			return drug.drugId !== ident;
+	const handleDelete = async () => {
+		// //
+		// const newList = drugList.filter((drug) => {
+		// 	return drug.M.drugId.S !== drugId;
+		// });
+		//find index and replace
+		const drugIndex = drugList.findIndex((drug) => {
+			return drug.M.drugId.S === drugId;
 		});
-		axios
-			.patch('/api/user/delete', newList)
-			.then((response) => {
-				console.log(response);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
+		// drugList.splice(drugIndex, 1, updatedDrug);
+		// console.log(drugList);
+
+		try {
+			await axios
+				.patch('/api/user/delete', { drugIndex, email })
+				.then((response) => {
+					console.log(response);
+					return response;
+				})
+				.catch((error) => {
+					throw Error(error);
+				});
+		} catch (error) {
+			console.log(error.message);
+		}
+
+		return navigate(`/user/${uid}`);
 	};
 
 	return (
@@ -39,11 +55,11 @@ const DeleteModal = ({ id, drugName, ident }) => {
 						<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
 							Close
 						</button>
-						<button type="button" className="btn btn-danger" onClick={handleDelete}>
-							<a href={`/user/${uid}`} style={{ textDecoration: 'none', color: 'white' }}>
+						<a href={`/user/${uid}`}>
+							<button type="button" className="btn btn-danger" onClick={handleDelete}>
 								Delete Drug
-							</a>
-						</button>
+							</button>
+						</a>
 					</div>
 				</div>
 			</div>

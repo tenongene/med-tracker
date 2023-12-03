@@ -28,7 +28,7 @@ const EntryForm = ({ id }) => {
 		const newDrug = [
 			{
 				drugName: _.capitalize(drugName),
-				strengthUnit: _.lowerCase(strengthUnit),
+				strengthUnit: strengthUnit,
 				directions: _.capitalize(directions),
 				drugStrength: drugStrength,
 				refillsLeft: refillsLeft,

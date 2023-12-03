@@ -6,7 +6,7 @@ export const UserContextProvider = ({ children }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [uid, setUid] = useState('');
-	const [drugList, setDrugList] = useState([]);
+	const [drugList, setDrugList] = useState();
 	const [count, setCount] = useState('0');
 	const [firstName, setFirstName] = useState('');
 	const [emptyList, setEmptyList] = useState(
