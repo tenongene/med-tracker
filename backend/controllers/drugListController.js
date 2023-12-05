@@ -12,7 +12,7 @@ const client = new DynamoDBClient({
 });
 const ddb = DynamoDBDocumentClient.from(client);
 
-//Add a drug to user
+//Add  user drug
 const createUserDrug = async (req, res) => {
 	const { newDrug, email } = req.body;
 
@@ -29,7 +29,6 @@ const createUserDrug = async (req, res) => {
 			})
 		);
 
-		console.log(response);
 		return response;
 		//
 	} catch (error) {
@@ -37,7 +36,7 @@ const createUserDrug = async (req, res) => {
 	}
 };
 
-//edit user drug
+//Edit user drug
 const editUserDrug = async (req, res) => {
 	const { drugIndex, email, updatedDrug } = req.body;
 
@@ -54,7 +53,6 @@ const editUserDrug = async (req, res) => {
 			})
 		);
 
-		console.log(response);
 		return response;
 		//
 	} catch (error) {
@@ -62,7 +60,7 @@ const editUserDrug = async (req, res) => {
 	}
 };
 
-//delete user drug
+//Delete user drug
 const deleteUserDrug = async (req, res) => {
 	const { drugIndex, email } = req.body;
 
@@ -78,8 +76,6 @@ const deleteUserDrug = async (req, res) => {
 				ReturnValues: 'ALL_NEW',
 			})
 		);
-
-		console.log(response);
 		return response;
 		//
 	} catch (error) {

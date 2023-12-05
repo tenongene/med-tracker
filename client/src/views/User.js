@@ -1,23 +1,31 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { axiosRequest } from './Login';
 import axios from 'axios';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, redirect } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+const errorNotify = (input) => toast.error(input);
 
 export const User = () => {
 	//
 	const { drugList, setDrugList, setCount, setFirstName, setUid, setEmail } = useContext(UserContext);
 	//
 	const userData = useLoaderData();
+	console.log(userData);
 
-	setDrugList(userData.data[0].drugList.L);
-	setCount(userData.data[0].drugList.L.length);
-	setFirstName(userData.data[0].firstName.S);
-	setUid(userData.data[0].id.N);
-	setEmail(userData.data[0].email.S);
+	useEffect(() => {
+		if (userData) {
+			//
+			setDrugList(userData.data[0].drugList.L);
+			setCount(userData.data[0].drugList.L.length);
+			setFirstName(userData.data[0].firstName.S);
+			setUid(userData.data[0].id.N);
+			setEmail(userData.data[0].email.S);
+		}
+	});
 
 	return (
 		<div>
@@ -48,8 +56,14 @@ export const User = () => {
 };
 
 //loader
-
 export const userLoader = async ({ params }) => {
-	const loaderData = await axios.get(`/api/user/${params.uid}`);
-	return loaderData;
+	let loaderData;
+	try {
+		loaderData = await axios.get(`/api/user/${params.uid}`);
+		return loaderData;
+	} catch (error) {
+		console.log(error.message);
+		errorNotify(`${error.message}`);
+		return redirect('/user/undefined');
+	}
 };

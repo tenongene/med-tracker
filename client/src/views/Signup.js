@@ -23,8 +23,7 @@ const Signup = () => {
 		axios
 			.post('/api/user/signup', { firstName, email, password })
 			.then((response) => {
-				successNotify(response.data.msg);
-				localStorage.setItem('user', JSON.stringify(response));
+				successNotify(`${response.data.msg}. Please Login!`);
 				navigate('/');
 				console.log(response);
 			})

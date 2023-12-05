@@ -1,8 +1,14 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { redirect } from 'react-router-dom';
 import axios from 'axios';
 const _ = require('lodash');
+const capitalizer = (input, indices) => {
+	input = input.split(' ');
+	input = input.map((word) => (word.length <= indices ? word.toUpperCase() : _.capitalize(word)));
+	input = input.join(' ');
+	console.log(input);
+	return input;
+};
 
 const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
 	//
@@ -12,12 +18,12 @@ const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength,
 	const handleSubmit = async () => {
 		//
 		const updatedDrug = {
-			drugName: _.capitalize(drugName),
+			drugName: capitalizer(drugName, 2),
 			strengthUnit: _.lowerCase(strengthUnit),
 			directions: _.capitalize(directions),
 			drugStrength: drugStrength,
 			refillsLeft: refillsLeft,
-			drugInfo: _.capitalize(drugInfo),
+			drugInfo: capitalizer(drugInfo, 4),
 			drugId: drugId,
 		};
 
@@ -39,8 +45,6 @@ const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength,
 		} catch (error) {
 			console.log(error.message);
 		}
-
-		return redirect(`/user/${uid}`);
 	};
 
 	return (

@@ -5,6 +5,14 @@ import { uid } from 'uid';
 
 const _ = require('lodash');
 
+const capitalizer = (input, indices) => {
+	input = input.split(' ');
+	input = input.map((word) => (word.length <= indices ? word.toUpperCase() : _.capitalize(word)));
+	input = input.join(' ');
+	console.log(input);
+	return input;
+};
+
 const EntryForm = ({ id }) => {
 	////
 
@@ -27,18 +35,18 @@ const EntryForm = ({ id }) => {
 	const handleSubmit = () => {
 		const newDrug = [
 			{
-				drugName: _.capitalize(drugName),
+				drugName: capitalizer(drugName, 2),
 				strengthUnit: strengthUnit,
 				directions: _.capitalize(directions),
 				drugStrength: drugStrength,
 				refillsLeft: refillsLeft,
-				drugInfo: _.capitalize(indication),
+				drugInfo: capitalizer(indication, 4),
 				drugId: uid(5),
 			},
 		];
 
 		axios
-			.patch('/api/user', { newDrug, email })
+			.patch('/api/user/add', { newDrug, email })
 			.then((response) => {
 				return response;
 			})

@@ -24,6 +24,9 @@ const client = new DynamoDBClient({
 const createToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.EXP });
 };
+// const createRefreshToken = (id) => {
+// 	return jwt.sign({ id }, process.env.JWT_SECRET_REFRESH, { expiresIn: process.env.R_EXP });
+// };
 //
 //bccrypt hashing
 const hashPass = async (password) => {
@@ -70,16 +73,15 @@ const loginUser = (req, res) => {
 
 				//bcrypt authentication
 				bcrypt.compare(password, response.Items[0].password.S).then((result) => {
-					const token = createToken(response.Items[0].password.S);
+					const accessToken = createToken({ user: response.Items[0].firstName.S, id: response.Items[0].id.N });
+
 					result
 						? res.status(200).json({
 								// response,
 								msg: 'User logged in successfully',
-								token,
+								accessToken,
 								user: response.Items[0].firstName.S,
 								id: response.Items[0].id.N,
-								email,
-								drugList: response.Items[0].drugList.L,
 						  })
 						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
 				});

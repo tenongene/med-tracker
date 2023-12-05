@@ -1,9 +1,18 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { Form, redirect } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+
+//Axios instance
+let accessToken;
+export const axiosRequest = axios.create({
+	// baseURL: 'http://localhost:3000',
+	headers: {
+		Authorization: `Bearer ${accessToken}`,
+	},
+});
+//
 
 const errorNotify = (input) => toast.error(input);
 const successNotify = (input) => toast.success(input);
@@ -92,26 +101,28 @@ export const Login = () => {
 export const submitAction = async ({ request }) => {
 	//
 	let uid;
-	const data = await request.formData();
-	const payload = {
-		email: data.get('inputEmail'),
-		password: data.get('inputPassword'),
-	};
-	console.log(payload);
+	try {
+		const data = await request.formData();
+		const payload = {
+			email: data.get('inputEmail'),
+			password: data.get('inputPassword'),
+		};
 
-	await axios
-		.post('/api/user/login', payload)
-		.then((response) => {
-			uid = response.data.id;
-			successNotify('User Logged In Successfully!');
-			// localStorage.setItem('user', JSON.stringify(response));
-			return response;
-		})
-		.catch((error) => {
-			error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
-			console.log({ error: error.response.data.error, msg: error.response.data.msg });
-			return redirect('/*');
-		});
-
+		await axios
+			.post('/api/user/login', payload)
+			.then((response) => {
+				accessToken = response.data.accessToken;
+				uid = response.data.id;
+				successNotify('User Logged In Successfully!');
+				console.log(response);
+			})
+			.catch((error) => {
+				error.response.data.msg ? errorNotify(error.response.data.msg) : errorNotify(error.response.data.error);
+				console.log({ error: error.response.data.error, msg: error.response.data.msg });
+				redirect('/user/undefined');
+			});
+	} catch (error) {
+		console.log(error.message);
+	}
 	return redirect(`/user/${uid}`);
 };
