@@ -1,33 +1,29 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { redirect } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const DeleteModal = ({ id, drugName, drugId }) => {
 	//
-	const { uid, drugList, email } = useContext(UserContext);
+	const { drugList, email, uid, setDrugList } = useContext(UserContext);
 	//
-	const handleDelete = async () => {
-		//
-		//find index and replace
+	const handleDelete = async (e) => {
+		e.preventDefault();
+
+		//find index to delete
 		const drugIndex = drugList.findIndex((drug) => {
-			return drug.M.drugId.S === drugId;
+			return drug.drugId === drugId;
 		});
 
-		try {
-			await axios
-				.patch('/api/user/delete', { drugIndex, email })
-				.then((response) => {
-					return response;
-				})
-				.catch((error) => {
-					throw Error(error);
-				});
-		} catch (error) {
-			console.log(error.message);
-		}
-
-		return redirect(`/user/${uid}`);
+		await axios
+			.patch('/api/user/delete', { drugIndex, email })
+			.then((response) => {
+				setDrugList(response.data.response.Attributes.drugList);
+				console.log(response);
+			})
+			.catch((error) => {
+				console.log(error.message);
+			});
 	};
 
 	return (
@@ -47,11 +43,11 @@ const DeleteModal = ({ id, drugName, drugId }) => {
 						<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
 							Close
 						</button>
-						<a href={`/user/${uid}`}>
-							<button type="button" className="btn btn-danger" onClick={handleDelete}>
-								Delete Drug
-							</button>
-						</a>
+						{/* <Link to={`/user/${uid}`}> */}
+						<button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={handleDelete}>
+							Delete Drug
+						</button>
+						{/* </Link> */}
 					</div>
 				</div>
 			</div>

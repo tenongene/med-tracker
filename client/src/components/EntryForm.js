@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
-import { uid } from 'uid';
+import { uid as drugId } from 'uid';
 
 const _ = require('lodash');
 
@@ -9,7 +9,6 @@ const capitalizer = (input, indices) => {
 	input = input.split(' ');
 	input = input.map((word) => (word.length <= indices ? word.toUpperCase() : _.capitalize(word)));
 	input = input.join(' ');
-	console.log(input);
 	return input;
 };
 
@@ -19,12 +18,14 @@ const EntryForm = ({ id }) => {
 	const {
 		email,
 		drugName,
+		setCount,
 		drugStrength,
 		strengthUnit,
 		directions,
 		refillsLeft,
 		indication,
 		setDrugName,
+		setDrugList,
 		setDrugStrength,
 		setStrengthUnit,
 		setDirections,
@@ -32,7 +33,9 @@ const EntryForm = ({ id }) => {
 		setIndication,
 	} = useContext(UserContext);
 
-	const handleSubmit = () => {
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		//
 		const newDrug = [
 			{
 				drugName: capitalizer(drugName, 2),
@@ -41,13 +44,16 @@ const EntryForm = ({ id }) => {
 				drugStrength: drugStrength,
 				refillsLeft: refillsLeft,
 				drugInfo: capitalizer(indication, 4),
-				drugId: uid(5),
+				drugId: drugId(5),
 			},
 		];
 
-		axios
+		await axios
 			.patch('/api/user/add', { newDrug, email })
 			.then((response) => {
+				setDrugList(response.data.response.Attributes.drugList);
+				setCount(response.data.response.Attributes.drugList.length);
+				console.log(response);
 				return response;
 			})
 			.catch((error) => {
@@ -60,13 +66,16 @@ const EntryForm = ({ id }) => {
 		setRefillsLeft('');
 		setStrengthUnit('');
 		setIndication('');
+
+		const toggleEntry = document.querySelector('#drugEntry');
+		toggleEntry.classList.toggle('show');
 	};
 
 	return (
 		<div>
 			<div className="collapse" id={id}>
 				<div className="card card-body">
-					<form>
+					<form onSubmit={handleSubmit}>
 						<div className="mb-3 ">
 							<label htmlFor="drug-name" className="form-label">
 								Drug Name
@@ -111,7 +120,6 @@ const EntryForm = ({ id }) => {
 								/>
 							</div>
 						</div>
-
 						<div className="mb-3">
 							<label htmlFor="directions" className="form-label">
 								Directions
@@ -158,13 +166,10 @@ const EntryForm = ({ id }) => {
 								}}
 							/>
 						</div>
-
-						<a href="/user/">
-							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
-								Submit
-								<img src="../send-ico.svg" alt="enter" className="ms-2" />
-							</button>
-						</a>
+						<button type="submit" className="btn btn-success">
+							Submit
+							<img src="../send-ico.svg" alt="enter" className="ms-2" />
+						</button>
 					</form>
 				</div>
 			</div>

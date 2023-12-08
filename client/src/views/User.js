@@ -1,69 +1,66 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { axiosRequest } from './Login';
-import axios from 'axios';
-import { useLoaderData, redirect } from 'react-router-dom';
+import { Login } from '../views/Login';
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
-import toast, { Toaster } from 'react-hot-toast';
-const errorNotify = (input) => toast.error(input);
+import { Toaster } from 'react-hot-toast';
+import { useLoaderData } from 'react-router-dom';
+import axios from 'axios';
 
 export const User = () => {
 	//
-	const { drugList, setDrugList, setCount, setFirstName, setUid, setEmail } = useContext(UserContext);
-	//
+	const { drugList } = useContext(UserContext);
+	const accessToken = localStorage.getItem('accessToken');
+
 	const userData = useLoaderData();
 	console.log(userData);
 
-	useEffect(() => {
-		if (userData) {
-			//
-			setDrugList(userData.data[0].drugList.L);
-			setCount(userData.data[0].drugList.L.length);
-			setFirstName(userData.data[0].firstName.S);
-			setUid(userData.data[0].id.N);
-			setEmail(userData.data[0].email.S);
-		}
-	});
-
 	return (
-		<div>
-			<Navbar />
-			<SummaryCard />
-			<Toaster />
-			<div className="container">
-				<div className="row">
-					{drugList &&
-						drugList.map((drug) => {
-							return (
-								<DrugCard
-									key={drug.M.drugId.S}
-									drugId={drug.M.drugId.S}
-									drugName={drug.M.drugName.S}
-									drugInfo={drug.M.drugInfo.S}
-									strengthUnit={drug.M.strengthUnit.S}
-									drugStrength={drug.M.drugStrength.S}
-									refillsLeft={drug.M.refillsLeft.S}
-									directions={drug.M.directions.S}
-								/>
-							);
-						})}
+		<>
+			{accessToken ? (
+				<div>
+					<Navbar />
+					<SummaryCard />
+					<Toaster />
+					<div className="container">
+						<div className="row">
+							{drugList &&
+								drugList.map((drug) => {
+									return (
+										<DrugCard
+											key={drug.drugId}
+											drugId={drug.drugId}
+											drugName={drug.drugName}
+											drugInfo={drug.drugInfo}
+											strengthUnit={drug.strengthUnit}
+											drugStrength={drug.drugStrength}
+											refillsLeft={drug.refillsLeft}
+											directions={drug.directions}
+										/>
+									);
+								})}
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
+			) : (
+				<Login />
+			)}
+		</>
 	);
 };
 
 //loader
-export const userLoader = async ({ params }) => {
-	let loaderData;
-	try {
-		loaderData = await axios.get(`/api/user/${params.uid}`);
-		return loaderData;
-	} catch (error) {
-		console.log(error.message);
-		errorNotify(`${error.message}`);
-		return redirect('/user/undefined');
-	}
-};
+// export const userLoader = async ({ params }) => {
+// 	const token = localStorage.getItem('accessToken');
+// 	const response = await axios({
+// 		url: `/api/user/${params.uid}`,
+// 		method: 'GET',
+
+// 		headers: {
+// 			Authorization: `Bearer ${token}`,
+// 		},
+// 	});
+// 	console.log(response);
+// 	return response;
+// };

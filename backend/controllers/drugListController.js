@@ -29,7 +29,8 @@ const createUserDrug = async (req, res) => {
 			})
 		);
 
-		return response;
+		res.status(200).json({ response });
+
 		//
 	} catch (error) {
 		console.log(error.message);
@@ -53,10 +54,11 @@ const editUserDrug = async (req, res) => {
 			})
 		);
 
-		return response;
+		res.status(200).json({ response });
+
 		//
 	} catch (error) {
-		console.log(error.message);
+		res.status(400).send({ error: error.message });
 	}
 };
 
@@ -70,16 +72,14 @@ const deleteUserDrug = async (req, res) => {
 				TableName: TABLE_NAME,
 				Key: { email: email },
 				UpdateExpression: `REMOVE drugList[${drugIndex}]`,
-				// ExpressionAttributeValues: {
-				// 	':newlist': newList,
-				// },
 				ReturnValues: 'ALL_NEW',
 			})
 		);
-		return response;
+		res.status(200).json({ response });
+
 		//
 	} catch (error) {
-		console.log(error.message);
+		res.status(400).send({ error: error.message });
 	}
 };
 

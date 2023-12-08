@@ -23,4 +23,9 @@ const requireAuth = (req, res, next) => {
 	next();
 };
 
-module.exports = requireAuth;
+const redirect = (req, res, next) => {
+	res.redirect(`/api/user/${req.uid}`);
+	next();
+};
+
+module.exports = { requireAuth, redirect };

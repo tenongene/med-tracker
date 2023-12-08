@@ -2,7 +2,8 @@ require('dotenv').config();
 const _ = require('lodash');
 const validator = require('validator');
 const { randomInt } = require('node:crypto');
-const { DynamoDBClient, PutItemCommand, QueryCommand } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBDocumentClient, PutCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 //env variables
@@ -18,17 +19,14 @@ const client = new DynamoDBClient({
 	accessKeyId: ACCESS_KEY,
 	secretAccessKey: SECRET,
 });
+const ddb = DynamoDBDocumentClient.from(client);
 
 //
 //JWT issue function
 const createToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.EXP });
 };
-// const createRefreshToken = (id) => {
-// 	return jwt.sign({ id }, process.env.JWT_SECRET_REFRESH, { expiresIn: process.env.R_EXP });
-// };
-//
-//bccrypt hashing
+
 const hashPass = async (password) => {
 	try {
 		const salt = await bcrypt.genSalt(15);
@@ -46,80 +44,77 @@ const id = () => {
 };
 
 // login user // App Entrypoint
-const loginUser = (req, res) => {
+const loginUser = async (req, res) => {
 	const { email, password } = req.body;
-	const user = new QueryCommand({
-		TableName: TABLE_NAME,
-		KeyConditionExpression: 'email = :emailval',
-		Select: 'ALL_ATTRIBUTES',
-		ExpressionAttributeValues: {
-			':emailval': {
-				S: email,
-			},
-		},
-	});
 
 	try {
+		const response = await ddb.send(
+			new QueryCommand({
+				TableName: TABLE_NAME,
+				KeyConditionExpression: 'email = :emailval',
+				Select: 'ALL_ATTRIBUTES',
+				ExpressionAttributeValues: {
+					':emailval': email,
+				},
+			})
+		);
+
 		if (!email || !password) {
 			throw Error('All fields must be filled');
 		}
 
-		client
-			.send(user)
-			.then((response) => {
-				if (response.Items.length === 0) {
-					throw Error('No user found with that email!');
-				}
+		if (response.Items.length === 0) {
+			throw Error('No user found with that email!');
+		}
 
-				//bcrypt authentication
-				bcrypt.compare(password, response.Items[0].password.S).then((result) => {
-					const accessToken = createToken({ user: response.Items[0].firstName.S, id: response.Items[0].id.N });
+		//bcrypt authentication
+		bcrypt.compare(password, response.Items[0].password).then((result) => {
+			const accessToken = createToken({ user: response.Items[0].firstName, id: response.Items[0].id });
 
-					result
-						? res.status(200).json({
-								// response,
-								msg: 'User logged in successfully',
-								accessToken,
-								user: response.Items[0].firstName.S,
-								id: response.Items[0].id.N,
-						  })
-						: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
-				});
-			})
-			.catch((err) => {
-				res.status(403).json({ error: err.message });
-			});
-		//
+			result
+				? res.status(200).json({
+						// response,
+						msg: 'User logged in successfully',
+						accessToken,
+						user: response.Items[0].firstName,
+						id: response.Items[0].id,
+						drugList: response.Items[0].drugList,
+				  })
+				: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
+			console.log(response);
+		});
 	} catch (err) {
 		console.log(err.message);
 		res.status(404).json({ error: err.message });
+
+		//
 	}
 };
 
 //
 
 //getuser //from GSI
-const getUser = (req, res) => {
-	const user = new QueryCommand({
-		TableName: TABLE_NAME,
-		IndexName: TABLE_GSI,
-		KeyConditionExpression: 'id = :idvalue',
-		ExpressionAttributeValues: {
-			':idvalue': { N: `${req.params.id}` },
-		},
-		ProjectionExpression: 'drugList, email, firstName, id',
-	});
+const getUser = async (req, res) => {
+	try {
+		const response = await ddb.send(
+			new QueryCommand({
+				TableName: TABLE_NAME,
+				IndexName: TABLE_GSI,
+				KeyConditionExpression: 'id = :idvalue',
+				ExpressionAttributeValues: {
+					':idvalue': `${req.params.id}`,
+				},
 
-	client
-		.send(user)
-		.then((response) => {
-			res.status(200).json(response.Items);
-			return response;
-		})
-		.catch((err) => {
-			res.status(404).json({ error: err.message });
-			console.log(err.message);
-		});
+				ProjectionExpression: 'drugList',
+			})
+		);
+		console.log(response);
+		res.status(200).json(response);
+		return response;
+	} catch (err) {
+		res.status(403).json({ error: err.message });
+		console.log(err.message);
+	}
 };
 
 //
@@ -133,21 +128,11 @@ const signupUser = async (req, res) => {
 		TableName: TABLE_NAME,
 		ConditionExpression: 'attribute_not_exists(email)',
 		Item: {
-			password: {
-				S: `${h_pass}`,
-			},
-			email: {
-				S: `${email}`,
-			},
-			firstName: {
-				S: `${_.capitalize(firstName)}`,
-			},
-			id: {
-				N: `${id()}`,
-			},
-			drugList: {
-				L: [],
-			},
+			password: `${h_pass}`,
+			email: `${email}`,
+			firstName: `${_.capitalize(firstName)}`,
+			id: `${id()}`,
+			drugList: [],
 		},
 	};
 
@@ -165,17 +150,10 @@ const signupUser = async (req, res) => {
 			throw Error('Password must be at least 6 characters in length and contain at least one special character');
 		}
 
-		const newUser = new PutItemCommand(userModel);
-		client
-			.send(newUser)
-			.then((response) => {
-				//
-				res.status(201).json({ msg: 'User created successfully', email, password: h_pass, jwtoken });
-			})
-			//
-			.catch((err) => {
-				res.status(400).json({ error: err.message, msg: 'User already exists! Please Login!' });
-			});
+		const response = await ddb.send(new PutCommand(userModel));
+		console.log(response);
+
+		res.status(201).json({ msg: 'User created successfully', email, password: h_pass, jwtoken });
 	} catch (err) {
 		res.status(400).send({ error: err.message });
 	}

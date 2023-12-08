@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-const requireAuth = require('../middleware/requireAuth');
+const { requireAuth, redirect } = require('../middleware/requireAuth');
 const { signupUser, loginUser, getUser } = require('../controllers/userController');
 const { createUserDrug, editUserDrug, deleteUserDrug } = require('../controllers/drugListController');
 
@@ -28,5 +28,4 @@ router.patch('/edit', editUserDrug);
 router.use('/delete', requireAuth);
 router.patch('/delete', deleteUserDrug);
 
-//
 module.exports = router;
