@@ -1,25 +1,25 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { Login } from '../views/Login';
+import { Login } from './Login';
 import Navbar from '../components/Navbar';
 import SummaryCard from '../components/SummaryCard';
 import DrugCard from '../components/DrugCard';
+import Footer from '../components/Footer';
 import { Toaster } from 'react-hot-toast';
-import { useLoaderData } from 'react-router-dom';
-import axios from 'axios';
 
 export const User = () => {
 	//
-	const { drugList } = useContext(UserContext);
-	const accessToken = localStorage.getItem('accessToken');
-
-	const userData = useLoaderData();
-	console.log(userData);
+	const { drugList, accessToken, setAccessToken } = useContext(UserContext);
+	//
+	useEffect(() => {
+		const accessToken = localStorage.getItem('accessToken');
+		setAccessToken(accessToken);
+	});
 
 	return (
 		<>
 			{accessToken ? (
-				<div>
+				<div className="interface">
 					<Navbar />
 					<SummaryCard />
 					<Toaster />
@@ -42,6 +42,7 @@ export const User = () => {
 								})}
 						</div>
 					</div>
+					<Footer />
 				</div>
 			) : (
 				<Login />
@@ -49,18 +50,3 @@ export const User = () => {
 		</>
 	);
 };
-
-//loader
-// export const userLoader = async ({ params }) => {
-// 	const token = localStorage.getItem('accessToken');
-// 	const response = await axios({
-// 		url: `/api/user/${params.uid}`,
-// 		method: 'GET',
-
-// 		headers: {
-// 			Authorization: `Bearer ${token}`,
-// 		},
-// 	});
-// 	console.log(response);
-// 	return response;
-// };

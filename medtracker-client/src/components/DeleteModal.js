@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const DeleteModal = ({ id, drugName, drugId }) => {
 	//
-	const { drugList, email, uid, setDrugList } = useContext(UserContext);
+	const { drugList, email, setDrugList } = useContext(UserContext);
 	//
 	const handleDelete = async (e) => {
 		e.preventDefault();
@@ -16,7 +16,7 @@ const DeleteModal = ({ id, drugName, drugId }) => {
 		});
 
 		await axios
-			.patch('/api/user/delete', { drugIndex, email })
+			.patch('/user/delete', { drugIndex, email })
 			.then((response) => {
 				setDrugList(response.data.response.Attributes.drugList);
 				console.log(response);

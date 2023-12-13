@@ -21,7 +21,7 @@ const Signup = () => {
 			setPassMatch('');
 		}
 		axios
-			.post('/api/user/signup', { firstName, email, password })
+			.post('/user/signup', { firstName, email, password })
 			.then((response) => {
 				successNotify(`${response.data.msg}. Please Login!`);
 				navigate('/');

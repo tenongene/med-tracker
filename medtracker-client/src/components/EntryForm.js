@@ -49,7 +49,7 @@ const EntryForm = ({ id }) => {
 		];
 
 		await axios
-			.patch('/api/user/add', { newDrug, email })
+			.patch('/user/add', { newDrug, email })
 			.then((response) => {
 				setDrugList(response.data.response.Attributes.drugList);
 				setCount(response.data.response.Attributes.drugList.length);
@@ -88,6 +88,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setDrugName(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="row">
@@ -103,6 +104,7 @@ const EntryForm = ({ id }) => {
 									onChange={(e) => {
 										setDrugStrength(e.target.value);
 									}}
+									required
 								/>
 							</div>
 							<div className="col mb-3">
@@ -132,6 +134,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setDirections(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="mb-3">
@@ -146,6 +149,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setRefillsLeft(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="mb-3">
@@ -164,6 +168,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setIndication(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<button type="submit" className="btn btn-success">

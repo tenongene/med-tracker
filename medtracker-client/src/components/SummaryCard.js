@@ -31,7 +31,7 @@ const SummaryCard = () => {
 								</h4>
 								<div className="add-drug mt-5">
 									<h5 className="mb-4 text-danger">
-										<em>{!count && emptyList}</em>
+										<em>{count === '0' && emptyList}</em>
 									</h5>
 									<p>
 										<button

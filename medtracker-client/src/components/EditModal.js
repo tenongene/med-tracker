@@ -12,7 +12,7 @@ const capitalizer = (input, indices) => {
 
 const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
 	//
-	const { drugList, email, uid, setDrugList } = useContext(UserContext);
+	const { drugList, email, setDrugList } = useContext(UserContext);
 
 	//
 	const handleSubmit = async (e) => {
@@ -34,7 +34,7 @@ const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength,
 		});
 
 		await axios
-			.patch('/api/user/edit', { drugIndex, email, updatedDrug })
+			.patch('/user/edit', { drugIndex, email, updatedDrug })
 			.then((response) => {
 				setDrugList(response.data.response.Attributes.drugList);
 			})

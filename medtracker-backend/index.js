@@ -1,3 +1,4 @@
+const serverless = require('serverless-http');
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
@@ -5,7 +6,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
-const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
 
 //middleware
 app.use(express.json());
@@ -15,7 +16,9 @@ app.use(cors());
 //routes
 app.use('/api/user', userRoutes);
 
-//listen for requests
-app.listen(PORT, () => {
-	console.log(`MedTracker app is listening on port ${PORT}`);
-});
+// // listen for requests
+// app.listen(PORT, () => {
+// 	console.log(`MedTracker app is listening on port ${PORT}`);
+// });
+
+module.exports.handler = serverless(app);

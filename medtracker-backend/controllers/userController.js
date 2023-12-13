@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
 						drugList: response.Items[0].drugList,
 				  })
 				: res.status(403).json({ msg: 'Login Failed! Invalid password!' });
-			console.log(response);
+			// console.log(response);
 		});
 	} catch (err) {
 		console.log(err.message);

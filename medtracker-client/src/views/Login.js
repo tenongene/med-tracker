@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { User } from '../views/User';
+import { User } from './User';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
@@ -27,7 +27,7 @@ export const Login = () => {
 		e.preventDefault();
 
 		axios
-			.post('/api/user/login', { email, password })
+			.post('/user/login', { email, password })
 			.then((response) => {
 				console.log(response);
 				setUid(response.data.id);
@@ -35,8 +35,8 @@ export const Login = () => {
 				setAccessToken(response.data.accessToken);
 				setFirstName(response.data.user);
 				setCount(response.data.drugList.length);
-				localStorage.setItem('accessToken', response.data.accessToken);
 				successNotify('User Logged In Successfully!');
+				localStorage.setItem('accessToken', `${response.data.accessToken}`);
 			})
 			.catch((error) => {
 				console.log({ error: error.response.data.error, msg: error.response.data.msg });
@@ -72,8 +72,6 @@ export const Login = () => {
 									</div>
 								</div>
 								<div className="card-body">
-									{/* // */}
-									{/* Action definition */}
 									<form className="p-3" onSubmit={handleSubmit}>
 										{' '}
 										<div className="mb-3">

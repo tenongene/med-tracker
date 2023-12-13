@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-const { requireAuth, redirect } = require('../middleware/requireAuth');
+const { requireAuth } = require('../middleware/requireAuth');
 const { signupUser, loginUser, getUser } = require('../controllers/userController');
 const { createUserDrug, editUserDrug, deleteUserDrug } = require('../controllers/drugListController');
 
