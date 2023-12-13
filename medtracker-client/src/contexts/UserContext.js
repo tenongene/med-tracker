@@ -20,6 +20,7 @@ export const UserContextProvider = ({ children }) => {
 	const [indication, setIndication] = useState('');
 	const [drugList, setDrugList] = useState([]);
 	const [accessToken, setAccessToken] = useState(null);
+	const [passMatch, setPassMatch] = useState('');
 	const [error, setError] = useState('Something went wrong. Please login to restart the application.');
 
 	return (
@@ -40,6 +41,8 @@ export const UserContextProvider = ({ children }) => {
 				uid,
 				emptyList,
 				accessToken,
+				passMatch,
+				setPassMatch,
 				setDrugList,
 				setUid,
 				setCount,

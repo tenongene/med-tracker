@@ -11,6 +11,9 @@ const Footer = () => {
 				<p className="fw-bold mb-1" style={{ textDecoration: 'none', color: 'darkcyan', fontSize: '16px' }}>
 					<em>React Full Stack Application by T. Enongene (DevProjects Challenge) &copy; 2023</em>
 				</p>
+				<p className="fw-bold mb-1" style={{ textDecoration: 'none', color: 'darkcyan', fontSize: '16px' }}>
+					<em>Frontend: AWS Amplify Serverless, linked to Github repository for CI/CD.</em>/em>
+				</p>
 				<p className="fw-bold pb-2" style={{ textDecoration: 'none', color: 'darkcyan', fontSize: '16px' }}>
 					<em>Backend: NodeJS/Express API with AWS DynamoDB. Deployment: AWS Serverless with Lambda Function</em>
 				</p>

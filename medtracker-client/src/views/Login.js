@@ -36,7 +36,7 @@ export const Login = () => {
 				setFirstName(response.data.user);
 				setCount(response.data.drugList.length);
 				successNotify('User Logged In Successfully!');
-				localStorage.setItem('accessToken', `${response.data.accessToken}`);
+				window.localStorage.setItem('accessToken', `${response.data.accessToken}`);
 			})
 			.catch((error) => {
 				console.log({ error: error.response.data.error, msg: error.response.data.msg });
