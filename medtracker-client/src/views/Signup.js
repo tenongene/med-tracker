@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
@@ -7,10 +8,8 @@ const successNotify = (input) => toast.success(input);
 const errorNotify = (input) => toast.error(input);
 
 const Signup = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [firstName, setFirstName] = useState('');
-	const [passMatch, setPassMatch] = useState('');
+	const { email, password, setEmail, setPassword, firstName, passMatch, setPassMatch, setFirstName } =
+		useContext(UserContext);
 	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
@@ -21,10 +20,9 @@ const Signup = () => {
 			setPassMatch('');
 		}
 		axios
-			.post('/api/user/signup', { firstName, email, password })
+			.post('/user/signup', { firstName, email, password })
 			.then((response) => {
-				successNotify(response.data.msg);
-				localStorage.setItem('user', JSON.stringify(response));
+				successNotify(`${response.data.msg}. Please Login!`);
 				navigate('/');
 				console.log(response);
 			})

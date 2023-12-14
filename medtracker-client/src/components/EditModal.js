@@ -1,46 +1,47 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { redirect } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
 const _ = require('lodash');
+const capitalizer = (input, indices) => {
+	input = input.split(' ');
+	input = input.map((word) => (word.length <= indices ? word.toUpperCase() : _.capitalize(word)));
+	input = input.join(' ');
+	return input;
+};
 
 const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength, refillsLeft, directions }) => {
 	//
-	const { uid, drugList, email } = useContext(UserContext);
+	const { drugList, email, setDrugList } = useContext(UserContext);
 
 	//
-	const handleSubmit = async () => {
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 		//
 		const updatedDrug = {
-			drugName: _.capitalize(drugName),
+			drugName: capitalizer(drugName, 2),
 			strengthUnit: _.lowerCase(strengthUnit),
 			directions: _.capitalize(directions),
 			drugStrength: drugStrength,
 			refillsLeft: refillsLeft,
-			drugInfo: _.capitalize(drugInfo),
+			drugInfo: capitalizer(drugInfo, 4),
 			drugId: drugId,
 		};
 
-		try {
-			//find index and replace
-			const drugIndex = drugList.findIndex((drug) => {
-				return drug.M.drugId.S === drugId;
+		//find index and replace
+		const drugIndex = drugList.findIndex((drug) => {
+			return drug.drugId === drugId;
+		});
+
+		await axios
+			.patch('/user/edit', { drugIndex, email, updatedDrug })
+			.then((response) => {
+				setDrugList(response.data.response.Attributes.drugList);
+			})
+			.catch((error) => {
+				console.log(error.message);
 			});
-
-			await axios
-				.patch('/api/user/edit', { drugIndex, email, updatedDrug })
-				.then((response) => {
-					return response;
-				})
-				.catch((error) => {
-					throw Error(error);
-				});
-			//
-		} catch (error) {
-			console.log(error.message);
-		}
-
-		return redirect(`/user/${uid}`);
+		//
 	};
 
 	return (
@@ -146,12 +147,12 @@ const EditModal = ({ drugId, id, drugName, drugInfo, strengthUnit, drugStrength,
 						<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
 							Close
 						</button>
-						<a href={`/user/${uid}`}>
-							<button type="button" className="btn btn-success" onClick={handleSubmit}>
-								<img src="../save.svg" alt="save" className="me-2" />
-								Save changes
-							</button>
-						</a>
+						{/* <Link to={`/user/${uid}`}> */}
+						<button type="button" className="btn btn-success" data-bs-dismiss="modal" onClick={handleSubmit}>
+							<img src="../save.svg" alt="save" className="me-2" />
+							Save changes
+						</button>
+						{/* </Link> */}
 					</div>
 				</div>
 			</div>

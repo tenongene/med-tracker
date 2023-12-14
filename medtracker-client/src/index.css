@@ -1,3 +1,5 @@
+@import '~bootstrap-icons/font/bootstrap-icons';
+
 body {
 	margin: 0;
 	font-family: Lato, Roboto, Poppins, sans-serif;
@@ -30,4 +32,15 @@ body {
 
 .logout:hover {
 	background-color: rgb(128, 227, 227);
+}
+
+.interface {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.footer {
+	margin-top: auto;
+	height: 180px;
 }

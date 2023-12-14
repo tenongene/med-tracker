@@ -6,7 +6,7 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 
 	return (
 		<div className="col-sm-12 col-md-6 col-lg-4 shadow-md rounded">
-			<div className="card card border-secondary mt-4">
+			<div className="card border-secondary mt-4">
 				<div className="card-body">
 					<div className="edit-del">
 						<button
@@ -49,12 +49,12 @@ const DrugCard = ({ drugName, drugInfo, strengthUnit, drugStrength, refillsLeft,
 							{refillsLeft} refill{refillsLeft === '1' ? '' : 's'} left
 						</span>
 					</p>
-					<a href="/">
+					<a href="/home">
 						<span className="badge bg-success tt" data-bs-placement="top" title="set reminder">
 							<img src="../bell.svg" alt="reminder" />
 						</span>
 					</a>
-					<a href="/" data-bs-toggle="tooltip" data-bs-title="Default tooltip">
+					<a href="/home" data-bs-toggle="tooltip" data-bs-title="Default tooltip">
 						<span className="badge text-bg-primary ms-5" data-bs-placement="top" title="click for drug information">
 							{drugInfo}
 							<i className="bi bi-info-circle ms-2"></i>

@@ -1,9 +1,16 @@
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
-import { uid } from 'uid';
+import { uid as drugId } from 'uid';
 
 const _ = require('lodash');
+
+const capitalizer = (input, indices) => {
+	input = input.split(' ');
+	input = input.map((word) => (word.length <= indices ? word.toUpperCase() : _.capitalize(word)));
+	input = input.join(' ');
+	return input;
+};
 
 const EntryForm = ({ id }) => {
 	////
@@ -11,12 +18,14 @@ const EntryForm = ({ id }) => {
 	const {
 		email,
 		drugName,
+		setCount,
 		drugStrength,
 		strengthUnit,
 		directions,
 		refillsLeft,
 		indication,
 		setDrugName,
+		setDrugList,
 		setDrugStrength,
 		setStrengthUnit,
 		setDirections,
@@ -24,22 +33,27 @@ const EntryForm = ({ id }) => {
 		setIndication,
 	} = useContext(UserContext);
 
-	const handleSubmit = () => {
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		//
 		const newDrug = [
 			{
-				drugName: _.capitalize(drugName),
+				drugName: capitalizer(drugName, 2),
 				strengthUnit: strengthUnit,
 				directions: _.capitalize(directions),
 				drugStrength: drugStrength,
 				refillsLeft: refillsLeft,
-				drugInfo: _.capitalize(indication),
-				drugId: uid(5),
+				drugInfo: capitalizer(indication, 4),
+				drugId: drugId(5),
 			},
 		];
 
-		axios
-			.patch('/api/user', { newDrug, email })
+		await axios
+			.patch('/user/add', { newDrug, email })
 			.then((response) => {
+				setDrugList(response.data.response.Attributes.drugList);
+				setCount(response.data.response.Attributes.drugList.length);
+				console.log(response);
 				return response;
 			})
 			.catch((error) => {
@@ -52,13 +66,16 @@ const EntryForm = ({ id }) => {
 		setRefillsLeft('');
 		setStrengthUnit('');
 		setIndication('');
+
+		const toggleEntry = document.querySelector('#drugEntry');
+		toggleEntry.classList.toggle('show');
 	};
 
 	return (
 		<div>
 			<div className="collapse" id={id}>
 				<div className="card card-body">
-					<form>
+					<form onSubmit={handleSubmit}>
 						<div className="mb-3 ">
 							<label htmlFor="drug-name" className="form-label">
 								Drug Name
@@ -71,6 +88,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setDrugName(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="row">
@@ -86,6 +104,7 @@ const EntryForm = ({ id }) => {
 									onChange={(e) => {
 										setDrugStrength(e.target.value);
 									}}
+									required
 								/>
 							</div>
 							<div className="col mb-3">
@@ -103,7 +122,6 @@ const EntryForm = ({ id }) => {
 								/>
 							</div>
 						</div>
-
 						<div className="mb-3">
 							<label htmlFor="directions" className="form-label">
 								Directions
@@ -116,6 +134,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setDirections(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="mb-3">
@@ -130,6 +149,7 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setRefillsLeft(e.target.value);
 								}}
+								required
 							/>
 						</div>
 						<div className="mb-3">
@@ -148,15 +168,13 @@ const EntryForm = ({ id }) => {
 								onChange={(e) => {
 									setIndication(e.target.value);
 								}}
+								required
 							/>
 						</div>
-
-						<a href="/user/">
-							<button type="submit" className="btn btn-success" onClick={handleSubmit}>
-								Submit
-								<img src="../send-ico.svg" alt="enter" className="ms-2" />
-							</button>
-						</a>
+						<button type="submit" className="btn btn-success">
+							Submit
+							<img src="../send-ico.svg" alt="enter" className="ms-2" />
+						</button>
 					</form>
 				</div>
 			</div>

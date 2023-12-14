@@ -12,7 +12,7 @@ const client = new DynamoDBClient({
 });
 const ddb = DynamoDBDocumentClient.from(client);
 
-//Add a drug to user
+//Add  user drug
 const createUserDrug = async (req, res) => {
 	const { newDrug, email } = req.body;
 
@@ -29,15 +29,15 @@ const createUserDrug = async (req, res) => {
 			})
 		);
 
-		console.log(response);
-		return response;
+		res.status(200).json({ response });
+
 		//
 	} catch (error) {
 		console.log(error.message);
 	}
 };
 
-//edit user drug
+//Edit user drug
 const editUserDrug = async (req, res) => {
 	const { drugIndex, email, updatedDrug } = req.body;
 
@@ -54,15 +54,15 @@ const editUserDrug = async (req, res) => {
 			})
 		);
 
-		console.log(response);
-		return response;
+		res.status(200).json({ response });
+
 		//
 	} catch (error) {
-		console.log(error.message);
+		res.status(400).send({ error: error.message });
 	}
 };
 
-//delete user drug
+//Delete user drug
 const deleteUserDrug = async (req, res) => {
 	const { drugIndex, email } = req.body;
 
@@ -72,18 +72,14 @@ const deleteUserDrug = async (req, res) => {
 				TableName: TABLE_NAME,
 				Key: { email: email },
 				UpdateExpression: `REMOVE drugList[${drugIndex}]`,
-				// ExpressionAttributeValues: {
-				// 	':newlist': newList,
-				// },
 				ReturnValues: 'ALL_NEW',
 			})
 		);
+		res.status(200).json({ response });
 
-		console.log(response);
-		return response;
 		//
 	} catch (error) {
-		console.log(error.message);
+		res.status(400).send({ error: error.message });
 	}
 };
 

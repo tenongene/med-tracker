@@ -3,10 +3,10 @@ import { createContext, useState } from 'react';
 export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }) => {
+	//
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [uid, setUid] = useState('');
-	const [drugList, setDrugList] = useState();
 	const [count, setCount] = useState('0');
 	const [firstName, setFirstName] = useState('');
 	const [emptyList, setEmptyList] = useState(
@@ -18,6 +18,10 @@ export const UserContextProvider = ({ children }) => {
 	const [directions, setDirections] = useState('');
 	const [refillsLeft, setRefillsLeft] = useState('');
 	const [indication, setIndication] = useState('');
+	const [drugList, setDrugList] = useState([]);
+	const [accessToken, setAccessToken] = useState(null);
+	const [passMatch, setPassMatch] = useState('');
+	const [error, setError] = useState('Something went wrong. Please login to restart the application.');
 
 	return (
 		<UserContext.Provider
@@ -33,13 +37,19 @@ export const UserContextProvider = ({ children }) => {
 				directions,
 				refillsLeft,
 				indication,
+				error,
 				uid,
+				emptyList,
+				accessToken,
+				passMatch,
+				setPassMatch,
 				setDrugList,
 				setUid,
 				setCount,
 				setFirstName,
 				setEmail,
-				emptyList,
+				setError,
+				setAccessToken,
 				setEmptyList,
 				setPassword,
 				setDrugName,
