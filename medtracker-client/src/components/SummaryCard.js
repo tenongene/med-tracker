@@ -3,7 +3,7 @@ import { UserContext } from '../contexts/UserContext';
 import EntryForm from './EntryForm';
 
 const SummaryCard = () => {
-	const { count, firstName, emptyList } = useContext(UserContext);
+	const { count, firstName, emptyList, setEmptyList } = useContext(UserContext);
 
 	return (
 		<div className="container">
@@ -31,7 +31,7 @@ const SummaryCard = () => {
 								</h4>
 								<div className="add-drug mt-5">
 									<h5 className="mb-4 text-danger">
-										<em>{count === '0' && emptyList}</em>
+										<em>{count === '0' ? emptyList : setEmptyList('')}</em>
 									</h5>
 									<p>
 										<button

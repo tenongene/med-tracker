@@ -25,7 +25,7 @@ function App() {
 	//
 	const { accessToken } = useContext(UserContext);
 	//axios globaal config
-	axios.defaults.baseURL = 'https://o6bgnvrfpx5tlkff2vubrfawri0ioclf.lambda-url.us-east-1.on.aws/';
+	// axios.defaults.baseURL = 'https://o6bgnvrfpx5tlkff2vubrfawri0ioclf.lambda-url.us-east-1.on.aws/';
 	axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 	axios.defaults.headers.post['Content-Type'] = 'application/json';
 
