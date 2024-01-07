@@ -7,7 +7,7 @@ export const UserContextProvider = ({ children }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [uid, setUid] = useState('');
-	const [count, setCount] = useState('0');
+	const [count, setCount] = useState(0);
 	const [firstName, setFirstName] = useState('');
 	const [emptyList, setEmptyList] = useState(
 		'You have not yet added any medications. Click the button below to begin adding your medications.'
