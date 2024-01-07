@@ -110,7 +110,7 @@ export const Login = () => {
 											<h6>
 												New to MedTracker?{' '}
 												<span className="ms-3">
-													<a href="/signup">Signup</a>
+													<a href="/signup">Sign Up</a>
 												</span>
 											</h6>
 										</div>
