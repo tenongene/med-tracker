@@ -66,7 +66,7 @@ export const Login = () => {
 											</a>
 
 											<h5 className="pt-2">
-												<em>Manage and track all your medications seamlessly!</em>
+												<em>Manage and track all of your medications seamlessly!</em>
 											</h5>
 										</div>
 									</div>
