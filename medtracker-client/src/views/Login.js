@@ -66,7 +66,7 @@ export const Login = () => {
 											</a>
 
 											<h5 className="pt-2">
-												<em>Manage and track all your medications seamlessly!</em>
+												<em>Manage and track all of your medications seamlessly!</em>
 											</h5>
 										</div>
 									</div>
@@ -110,7 +110,7 @@ export const Login = () => {
 											<h6>
 												New to MedTracker?{' '}
 												<span className="ms-3">
-													<a href="/signup">Signup</a>
+													<a href="/signup">Sign Up</a>
 												</span>
 											</h6>
 										</div>
