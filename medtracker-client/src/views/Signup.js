@@ -86,7 +86,7 @@ const Signup = () => {
 								</div>
 								<div className="mb-3">
 									<label htmlFor="inputPassword" className="form-label">
-										Password
+										Password (At least 6 characters in length and include at least 1 special character)
 									</label>
 									<input
 										type="password"
